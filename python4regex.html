@@ -136,6 +136,37 @@ In a searching function using the re.MULTILINE flag, ^ matches both at the begin
   <p>e.g.  time$, time\Z, \?$
 In a searching function using the re.MULTILINE flag, $ matches both at the end of the string and at the end of any line within the string, but only at the end of the whole string without the flag. re.MULTILINE has no effect on \Z. re.M is shorthand for re.MULTILINE. </p>
 </div>
+    <button class="collapsible"> Text required to be at the beginning of words to be a match (such as prefixes) </button>
+<div class="content">
+  <p><strong>Put \b in front of the expression</strong></p>
+  <p>e.g. \breg\w+ matches words starting with “reg” such as “regular”.
+\B is the opposite: matching patterns within or at the end of words, such as hyphens or slashes.
+</p>
+</div>
+<button class="collapsible">Text required to be at the end of words to be match (such as suffixes)</button>
+<div class="content">
+  <p><strong>Put \b behind the expression</strong></p>
+  <p>e.g. \w+ly\b matches words ending with “ly” such as “truly”.
+\B is the opposite:  matching patterns at the start or within words, such as hyphens or slashes.</p>
+</div>
+<button class="collapsible">Text required to be within words to be a match</button>
+<div class="content">
+  <p><strong>\B is the opposite of \b</strong></p>
+  <p>e.g \Bper\B will match “per” only if it appears within a larger word as in “operate”(not at the beginning or end of a word as in “per” or “super”). Useful for matching patterns within words or sequences, such as hyphens or slashes.
+</p>
+</div>
+<button class="collapsible">Automatically adding backslashes in an expression to escape special characters</button>
+<div class="content">
+  <p><strong>Use the re.escape() meethod</strong></p>
+  <p>re.escape() saves you the trouble of putting in all the backslashes manually when you have many special characters that must be matched literally. It returns a copy of the expression with each nonword character (anything other than a letter, digit, or underscore) preceded by a backslash e.g. re.escape('red^green(blue)|yellow') returns the expression string 'red\^green\(blue\)\|yellow' , and re.search(re.escape('red^green(blue)|yellow'), 'red^green(blue)|yellow') matches  'red^green(blue)|yellow' literally. </p>
+</div>
+<button class="collapsible">Specify a set of alternatives on which to match</button>
+<div class="content">
+  <p><strong>Insert the pipe character | between the alternative expressions</strong></p>
+  <p>e.g. [0-9]+|[a-f]+ means one or more digits, or one or more smallcaps from a to f.
+Alternation is non-greedy: stops when the first match is found, looking at the expressions from left to right e.g. re.search('a|b|c', 'abc') matches “a”. </p>
+</div>
+
 
 
 <h2>Using groups for flexible matching</h2>
