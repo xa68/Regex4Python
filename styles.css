@@ -14,6 +14,10 @@ font-size: 18px;
 padding: 5px;
 }
 
+nav ul {
+  list-style-type: none;  /* Remove default bullet points */
+}
+
 nav li {
   padding: 5px;
 }
