@@ -100,6 +100,43 @@ defen[dcs]?[e]? matches “defend”, “defence” and “defense”.</p>
   <p>*, +, ? are “greedy”, trying to match the longest possible string, e.g. <.*> matches the whole string “&lt;p&gt;Hello World&lt;/p&gt;”, whereas  <.*?> matches “&lt;p&gt;”.
 /d+ matches “123” but /d+? matches “1”.</p>
 </div>
+    <button class="collapsible">Specifying an exact number of repetitions of a character or set to be a match</button>
+<div class="content">
+  <p><strong>Put {m} after the expression</strong></p>
+  <p>e.g. Xv{4}X matches “XvvvvX”.
+</p>
+</div>
+<button class="collapsible">Specifying a min and max range of repetitions of a character or set to be a match</button>
+<div class="content">
+  <p><strong>Put {m, n} after the expression</strong></p>
+  <p>e.g. \d{1, 3} matches numbers made of one up to three digits
+{,n} is identical to {0,n}.</p>
+</div>
+<button class="collapsible">Specifying a minimum number of repetitions of a character or set to be a match (no upper limit)</button>
+<div class="content">
+  <p><strong>Put {m,} after the expression</strong></p>
+  <p>{m,} means at least m times, 
+{,} is identical to {0,} or *.</p>
+</div>
+<button class="collapsible">Getting the shortest possible match when using the {m, n} quantifiers (non-greedy, or lazy behaviour)</button>
+<div class="content">
+  <p><strong>Put a question mark after the expression:  {m,n}?</strong></p>
+  <p>e.g.  X{3,5}?. 
+{m,n} is “greedy”, trying to match the longest possible string.</p>
+</div>
+<button class="collapsible">Text required to be at the beginning of a string or of a new line to be a match</button>
+<div class="content">
+  <p><strong>Put the caret (^) anchor or \A in first position</strong></p>
+  <p>e.g.  ^Once, \AOnce, ^!!. With re.match(), the caret (^) anchor is redundant. 
+In a searching function using the re.MULTILINE flag, ^ matches both at the beginning of the string and at the beginning of any line within the string, but only at the beginning of the whole string without the flag. re.MULTILINE has no effect on \A.  re.M is shorthand for re.MULTILINE.</p>
+</div>
+<button class="collapsible">Text required to be at the end of a string or of a new line to be a match</button>
+<div class="content">
+  <p><strong>Put a dollar ($) anchor or \Z in last position</strong></p>
+  <p>e.g.  time$, time\Z, \?$
+In a searching function using the re.MULTILINE flag, $ matches both at the end of the string and at the end of any line within the string, but only at the end of the whole string without the flag. re.MULTILINE has no effect on \Z. re.M is shorthand for re.MULTILINE. </p>
+</div>
+
 
 <h2>Using groups for flexible matching</h2>
 <button class="collapsible">text</button>
