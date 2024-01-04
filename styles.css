@@ -23,6 +23,12 @@ nav li {
   padding: 5px;
 }
 
+nav a {
+  text-decoration: none;  /* Remove underline from links */
+  color: #333;
+  padding: 5px 10px;
+}
+
 .collapsible {
   background-color: #777;
   color: white;
