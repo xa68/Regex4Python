@@ -9,26 +9,95 @@
 
 <h1>Reference guide for regular expressions in Python</h1>
 
-<p>Matching text patterns</p>
-<button class="collapsible">Open Collapsible</button>
+<h2>Matching text patterns</h2>
+<button class="collapsible">Matching text literally</button>
 <div class="content">
-  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+  <p><strong>Use a string literal (concatenate ordinary characters)</strong></p>
+  <p>Case sensitive, e.g. reg matches “reg” in “regex”,  but not in “Regex”
+The re.I (re.IGNORECASE) flag makes matching case-insensitive in a searching function.
+</p>
+</div>
+<button class="collapsible">Matching any single alphanumeric character</button>
+<div class="content">
+  <p><strong>Use \w</strong></p>
+  <p>\w is shorthand for [a-zA-Z0-9_]. 
+\W is the opposite of \w, shorthand for [^a-zA-Z0-9_].
+</p>
+</div>
+<button class="collapsible">Matching any single digit</button>
+<div class="content">
+  <p><strong>Use \d</strong></p>
+  <p>\d is shorthand for [0-9]. \D is the opposite of \d, shorthand for [^0-9].</p>
+</div>
+<button class="collapsible">Matching a whitespace</button>
+<div class="content">
+  <p><strong>Use \s</strong></p>
+  <p>\s is shorthand for [ \r\n\t\f\v]. \S is the opposite, matching what is not whitespace: [^ \r\n\t\f\v].</p>
 </div>
 
-<p>Collapsible Set:</p>
-<button class="collapsible">Open Section 1</button>
+<h2>Using groups for flexible matching</h2>
+<button class="collapsible">text</button>
 <div class="content">
-  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+  <p><strong>text</strong></p>
+  <p>text</p>
 </div>
-<button class="collapsible">Open Section 2</button>
+<button class="collapsible">text</button>
 <div class="content">
-  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-</div>
-<button class="collapsible">Open Section 3</button>
-<div class="content">
-  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+  <p><strong>text</strong></p>
+  <p>text</p>
 </div>
 
+<h2>Looking for matches and extracting matches
+</h2>
+<button class="collapsible">text</button>
+<div class="content">
+  <p><strong>text</strong></p>
+  <p>text</p>
+</div>
+<button class="collapsible">text</button>
+<div class="content">
+  <p><strong>text</strong></p>
+  <p>text</p>
+</div>
+
+<h2>Fine-tuning search with flags
+</h2>
+<button class="collapsible">text</button>
+<div class="content">
+  <p><strong>text</strong></p>
+  <p>text</p>
+</div>
+<button class="collapsible">text</button>
+<div class="content">
+  <p><strong>text</strong></p>
+  <p>text</p>
+</div>
+
+<h2>Replacing and modifying parts of text
+</h2>
+<button class="collapsible">text</button>
+<div class="content">
+  <p><strong>text</strong></p>
+  <p>text</p>
+</div>
+<button class="collapsible">text</button>
+<div class="content">
+  <p><strong>text</strong></p>
+  <p>text</p>
+</div>
+
+<h2>Using the match objects returned by search functions
+</h2>
+<button class="collapsible">text</button>
+<div class="content">
+  <p><strong>text</strong></p>
+  <p>text</p>
+</div>
+<button class="collapsible">text</button>
+<div class="content">
+  <p><strong>text</strong></p>
+  <p>text</p>
+</div>
 <script src="script.js"></script>
 
 </body>
