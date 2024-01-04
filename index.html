@@ -168,7 +168,7 @@ In a searching function using the re.MULTILINE flag, $ matches both at the end o
 </div>
 <button class="collapsible">Automatically adding backslashes in an expression to escape special characters</button>
 <div class="content">
-  <p><strong>Use the re.escape() meethod</strong></p>
+  <p><strong>Use the re.escape() method</strong></p>
   <p>re.escape() saves you the trouble of putting in all the backslashes manually when you have many special characters that must be matched literally. It returns a copy of the expression with each nonword character (anything other than a letter, digit, or underscore) preceded by a backslash e.g. re.escape('red^green(blue)|yellow') returns the expression string 'red\^green\(blue\)\|yellow' , and re.search(re.escape('red^green(blue)|yellow'), 'red^green(blue)|yellow') matches  'red^green(blue)|yellow' literally. </p>
 </div>
 <button class="collapsible">Specify a set of alternatives on which to match</button>
