@@ -43,7 +43,6 @@ The re.I (re.IGNORECASE) flag makes matching case-insensitive in a searching fun
 <button class="collapsible">Matching a character with a set of options</button>
 <div class="content">
   <p><strong>Put the set of matching options in square brackets: [...].
-  
 Any of the characters enclosed within the square brackets [ ] is a matching option for a single character from the input text.
 </strong></p>
   <p>e.g. defen[cs]e matches both “defence” and “defense”. 
@@ -75,7 +74,32 @@ An hyphen (-) can indicate a range of characters in a set e.g. [a-fA-F], [0-5].
 It’s good practice to use a raw string to specify a regular expression in Python whenever it contains backslashes.
 </p>
 </div>
-
+<button class="collapsible">Making a character or set optional (any number of occurrences possible)</button>
+<div class="content">
+  <p><strong>Put an asterisk (*) behind the expression</strong></p>
+  <p>e.g, a* matches zero or more “a” characters (“”, “a”, “aa”, “aaa”, …)
+x*, \d*, \w*, … etc. can match a zero-length string or sequence(“”).</p>
+</div>
+<button class="collapsible">Making a character or set optional (zero or one occurrence possible)</button>
+<div class="content">
+  <p><strong>Put question mark (?) behind the expression</strong></p>
+  <p>e.g. colou?r matches both “color” and “colour”,
+defen[dcs]?[e]? matches “defend”, “defence” and “defense”.</p>
+</div>
+<button class="collapsible">Making a character or set a requirement for a match (one or more occurrences possible </button>
+<div class="content">
+  <p><strong>Put a plus sign (+) behind the expression
+</strong></p>
+  <p>e.g. \d+ matches one or more digits (9, 42, 321, …).</p>
+</div>
+<button class="collapsible">Getting the shortest possible match when using the *, +, ? quantifiers (non-greedy, or lazy behaviour)</button>
+<div class="content">
+  <p><strong>Put a question mark after the quantifier symbol: 
+*?, +?, ??
+</strong></p>
+  <p>*, +, ? are “greedy”, trying to match the longest possible string, e.g. <.*> matches the whole string “&lt;p&gt;Hello World&lt;/p&gt;”, whereas  <.*?> matches “&lt;p&gt;”.
+/d+ matches “123” but /d+? matches “1”.</p>
+</div>
 
 <h2>Using groups for flexible matching</h2>
 <button class="collapsible">text</button>
