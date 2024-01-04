@@ -15,7 +15,7 @@ padding: 5px;
 }
 
 nav ul {
-  list-style-image: url("arrow.png");
+  
   list-style-type: none;  /* Remove default bullet points */
 }
 
