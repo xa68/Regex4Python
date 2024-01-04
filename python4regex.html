@@ -34,6 +34,48 @@ The re.I (re.IGNORECASE) flag makes matching case-insensitive in a searching fun
   <p><strong>Use \s</strong></p>
   <p>\s is shorthand for [ \r\n\t\f\v]. \S is the opposite, matching what is not whitespace: [^ \r\n\t\f\v].</p>
 </div>
+<button class="collapsible">Matching any character</button>
+<div class="content">
+  <p><strong>. (dot) matches any single character (including a space), except the newline (\n) character</strong></p>
+  <p>Using the  re.S (re.DOTALL) flag with a searching function forces the dot to match a new line character.
+</p>
+</div>
+<button class="collapsible">Matching a character with a set of options</button>
+<div class="content">
+  <p><strong>Put the set of matching options in square brackets: [...].
+  
+Any of the characters enclosed within the square brackets [ ] is a matching option for a single character from the input text.
+</strong></p>
+  <p>e.g. defen[cs]e matches both “defence” and “defense”. 
+[^...] is the opposite, matching anything but what is in the set e.g <[^>]> matches an html tag with any content. 
+An hyphen (-) can indicate a range of characters in a set e.g. [a-fA-F], [0-5].
+</p>
+</div>
+<button class="collapsible">Matching a literal hyphen literally when in a set
+</button>
+<div class="content">
+  <p><strong>Place the hyphen in first or last position in the set, or escape it.
+</strong></p>
+  <p>e.g. [-abc], [abc-], [ab\-c].</p>
+</div>
+<button class="collapsible">Matching a special character literally when in a set</button>
+<div class="content">
+  <p><strong>Special characters lose their special meaning inside sets.</strong></p>
+  <p>e.g. the special characters in the set [().,*+?|] match themselves literally.</p>
+</div>
+<button class="collapsible">Matching a special character literally when outside a set</button>
+<div class="content">
+  <p><strong>Precede the special character with a backslash \ to remove its special meaning.</strong></p>
+  <p>e.g \. matches a literal dot, such as in "hello.world", \? matches a literal question mark, such as in "maybe?", \* matches a literal asterisk, such as in "a * b". </p>
+</div>
+<button class="collapsible">Matching a literal backslash when outside a set</button>
+<div class="content">
+  <p><strong>Use double backslashes \\  to escape the backslash, using a raw string (prefixed with “r”).</strong></p>
+  <p>e.g. r’\\’ or r’[\\]’ matches “\” in “foo\bar”.
+It’s good practice to use a raw string to specify a regular expression in Python whenever it contains backslashes.
+</p>
+</div>
+
 
 <h2>Using groups for flexible matching</h2>
 <button class="collapsible">text</button>
