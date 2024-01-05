@@ -395,19 +395,88 @@ split() is available for compiled expression objects as well eg. re.compile('\s*
 </p>
 </div>
 
-
 <h2 id='objects'>Using the match objects returned by search functions
 </h2>
-<button class="collapsible">text</button>
+<button class="collapsible">Referring to match objects</button>
 <div class="content">
-  <p><strong>text</strong></p>
-  <p>text</p>
+  <p><strong>Use m.group(), with m being the match object
+</strong></p>
+  <p>Calling m.group() with an argument of 0 or no argument returns the entire match e.g. m = re.search(r'(\w+),(\w+),(\w+)', 'red,green,blue'); m.group(0) gives 'red,green,blue'; m.group() gives 'red,green,blue'</p>
 </div>
-<button class="collapsible">text</button>
+<button class="collapsible">Referring to match objects by their number or name</button>
 <div class="content">
-  <p><strong>text</strong></p>
-  <p>text</p>
+  <p><strong>Pass the group order number or name as an argument to .group()</strong></p>
+  <p>e.g. m.group(n) returns the nth group e.g.  m =  re.search(r'(\w+),(\w+),(\w+)', 'red,green,blue'); m.group(1) gives 'red' m.group(3) → 'blue'; m.group(3, 1, 2) gives ('blue', 'red', 'green'); m[2] gives 'green' (syntactic sugar for m.group(2)).
+Example with named groups: m.group('name') returns the corresponding named group: m = re.search(r'(?P&lt;c1&gt;\w+),(?P&lt;c2&gt;\w+),(?P&lt;c3&gt;\w+)', 'red,green,blue'); m.group('c1') gives 'red'; m.group('c3') gives 'blue'; m.group('c3', 'c1', 'c1', 'c2') gives ('blue', 'red', 'red', 'green'); m['c2'] gives 'green' (syntactic sugar for m.group('c2')). 
+When a group is involved in the overall match several times, calling m.group() for that group number or name returns only the part of the input string that matched <strong>the last</strong>. The earlier matches are not accessible, e.g. m = re.match(r'(\w{3,5},)+', 'red,green,blue,yellow') gives match='red,green,blue,' with m.group(1) being 'blue,' (last match occurrence of that group)</p>
 </div>
+<button class="collapsible">Getting a dictionary mapping group names to group numbers (from a compiled expression object)</button>
+<div class="content">
+  <p><strong>Use the re_obj.groupindex attribute, with re_obj being the compiled regular expression object
+</strong></p>
+  <p>re_obj.groupindex contains a dictionary mapping each group name (?P&lt;name&gt;...), if any, to the corresponding group number e.g. re_obj = re.compile(r'(?P&lt;c1&gt;...),(?P&lt;c2&gt;...)'); re_obj.groupindex gives mappingproxy({'w1': 1, 'w2': 2}); re_obj.groupindex['c1'] is 1; re_obj.groupindex['c2'] is 2</p>
+</div>
+<button class="collapsible">Getting the matches as a tuple of strings</button>
+<div class="content">
+  <p><strong>Use m.groups() with m being the match object</strong></p>
+  <p>e.g. m = re.search(r'(\w+),(\w+),(\w+)', 'red,green,blue'); m.groups() gives ('red', 'green', 'blue'). 
+The optional default argument specifies what replaces None for  groups that  do not participate in the overall match, e.g. m =  re.search(r'(\w+),(\w+),(\w+)?', 'red,green,'); print(m.group(3)) gives None; m.groups() gives ('red', 'green', None); m.groups(default='???') gives ('foo', 'bar', '???')</p>
+</div>
+<button class="collapsible">Getting a dictionary of matches </button>
+<div class="content">
+  <p><strong>Use m.groupdict() with m being the match object</strong></p>
+  <p>m.groupdict() returns a dictionary of named groups captured with the (?P&lt;name&gt;...) pattern e.g. m =  re.search(r'red,(?P&lt;c1&gt;\w+),(?P&lt;c2&gt;\w+)?,yellow', 'red,green,,yellow'); m.groupdict() gives {'c1': 'green', 'c2': None}; m.groupdict(default='???') gives {'c1': 'green', 'c2': '???'}</p>
+</div>
+<button class="collapsible">Referring  to captured matches to insert text in a “template” string</button>
+<div class="content">
+  <p><strong>Use m.expand() with m being the match object, passing a reference to capturing groups, following the pattern \n or \g&lt;n&gt; for numbered groups, or g&lt;name&gt; for named groups
+</strong></p>
+  <p>m.expand() returns the string resulting from performing backreference substitution on the referred group(s) e.g. m = re.search(r'(\w+),(\w+),(\w+)', 'red,green,blue'); m gives match='red,green,blue'; m.groups() gives ('red', 'green', 'blue'); m.expand(r'\2') gives 'green'; m.expand(r'[\3] -> [\1]') gives '[blue] -> [red]'. g&lt;1&gt;, g&lt;2&gt; etc, can replace \1, \2 in the example above. Example with named groups: m = re.search(r'(?P&lt;qty&gt;\d+)', 'red123yellow'); m.group(1) gives '123'; m.expand(r'total \g&lt;qty&gt; units') gives 'total 123 units'. 
+expand() and re.sub() behave similarly</p>
+</div>
+<button class="collapsible">Getting the start index location or the end index location of a match</button>
+<div class="content">
+  <p><strong>Use m.start() or m.end(), with m being the match object</strong></p>
+  <p>m.start() and m.end() return  respectively the  starting and ending indices of the substring matched by the group referred to (numbered or named group) e. g.  m = re.search(r'(\d+)\D*(?P&lt;nbr&gt;\d+)', 'red123green456blue'); m.group(1) gives '123'; m.start(1), m.end(1) gives (3, 6)'; m.group('nbr') gives '456'; m.start('nbr'), m.end('nbr') gives (11, 14).
+If the specified group matches a zero-length (empty) string, then .start() and .end() are equal, e.g. m = re.search('red(\d*)green', 'redgreen'); m[1] gives ''; m.start(1), m.end(1) gives (3, 3)
+</p>
+</div>
+<button class="collapsible">Getting the start and end index locations of a match as a tuple</button>
+<div class="content">
+  <p><strong>Use m.span(), with m being the match object</strong></p>
+  <p>m.span() returns a tuple containing  the starting and ending indices of the captured match coming from the group referred to, e.g. m = re.search(r'(\d+)\D*(?P&lt;nbr&gt;\d+)', 'red123green456blue'); m[0] gives 'red123green456blue'; m.span() gives (3, 14); m[1] gives '123'; m.span(1) gives (3, 6); m['nbr'] gives '456'; m.span('nbr') gives (11, 14). 
+m.span() is a shortcut to directly get m.start() and m.end() in a tuple.</p>
+</div>
+<button class="collapsible">Getting the order number of the last group that participated in the match</button>
+<div class="content">
+  <p><strong>Use the m.lastindex attribute, with m being the match object</strong></p>
+  <p>m.lastindex is equal to the integer index of the last group that captured a match, e.g. m = re.search(r'(\w+),(\w+),(\w+)', 'red,green,blue'); m.lastindex gives 3; m[m.lastindex] gives 'blue'. 
+This tells you how many groups actually participated in the match, e.g. m = re.search(r'(\w+),(\w+),(\w+)?', 'red,green,'); m.groups() gives ('red', 'green', None); m.lastindex, m[m.lastindex] gives (2, 'green')</p>
+</div>
+<button class="collapsible">Getting the name of the last group that participated in the match</button>
+<div class="content">
+  <p><strong>Use the m.lastgroup attribute, with m being the match object</strong></p>
+  <p>m.lastgroup contains the name of the last group that captured a matchl  e.g. m = re.search(r'(?P&lt;n1&gt;\d+)\D*(?P&lt;n2&gt;\d+)', 'reg123green456blue'); 
+m.lastgroup gives 'n2';
+m.lastgroup returns None if the last captured match isn’t from a named group.</p>
+</div>
+<button class="collapsible">Getting an object of the expression that produced the match</button>
+<div class="content">
+  <p><strong>Use the m.re attribute, with m being the match object</strong></p>
+  <p>m.re is the regular expression object that produced the match (it is the same object returned from passing the expression  to re.compile()) e.g. expr = r'(\w+),(\w+),(\w+)'; m = re.search(expr, 'red,green,blue'); m gives match='red,green,blue'; m.re gives re.compile('(\\w+),(\\w+),(\\w+)'). To compare: re_obj = re.compile(expr); re_obj gives re.compile('(\\w+),(\\w+),(\\w+)'); re_obj is m.re gives True
+</p>
+</div>
+<button class="collapsible">Getting the pattern that produced the compiled expression object</button>
+<div class="content">
+  <p><strong>Use the re_obj.pattern attribute, with re_obj being the compiled regular expression object</strong></p>
+  <p>e.g. re_obj = re.compile(r'(?P&lt;c1&gt;>\d+),(?P&lt;c2&gt;\d+)'); re_obj.pattern gives '(?P&lt;c1&gt;\\d+),(?P&lt;c2&gt;\\d+)'</p>
+</div>
+<button class="collapsible">Getting the string that is the target of the search or of the substitution</button>
+<div class="content">
+  <p><strong>Use the m.string attribute, with m being the match object</strong></p>
+  <p>m.string contains the input string passed to the search or substitution function as an argument e.g. m = re.search(r'(\w+),(\w+),(\w+)', 'red,green,blue'); m.string gives 'red,green,blue'</p>
+</div>
+  
 <script src="script.js"></script>
 
 </body>
