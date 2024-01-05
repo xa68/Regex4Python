@@ -24,158 +24,154 @@
 <button class="collapsible">Matching text literally</button>
 <div class="content">
   <p><strong>Use a string literal</strong></p>
-  <p>Case sensitive, e.g. reg matches “reg” in “regex”,  but not in “Regex”
-The re.I (re.IGNORECASE) flag makes matching case-insensitive in a searching function.
+  <p>Case sensitive, e.g. <span class ='string'>reg</span> matches “reg” in “regex”, but not in “Regex”
+The <span class ='code'>re.I (re.IGNORECASE)</span> flag makes matching case-insensitive in a searching function.
 </p>
 </div>
 <button class="collapsible">Matching any single alphanumeric character</button>
 <div class="content">
-  <p><strong>Use \w</strong></p>
-  <p>\w is shorthand for [a-zA-Z0-9_]. 
-\W is the opposite of \w, shorthand for [^a-zA-Z0-9_].
+  <p><strong>Use <span class ='code'>\w</span></strong></p>
+  <p><span class ='code'>\w</span> is shorthand for <span class ='string'>[a-zA-Z0-9_]</span>. 
+<span class ='code'>\W</span> is the opposite of <span class ='code'>\w</span>, shorthand for <span class ='string'>[^a-zA-Z0-9_]</span>.
 </p>
 </div>
 <button class="collapsible">Matching any single digit</button>
 <div class="content">
-  <p><strong>Use \d</strong></p>
-  <p>\d is shorthand for [0-9]. \D is the opposite of \d, shorthand for [^0-9].</p>
+  <p><strong>Use <span class ='code'>\d</span></strong></p>
+  <p>\<span class ='code'>\d</span> is shorthand for <span class ='string'>[0-9]</span>. <span class ='code'>\D</span> is the opposite of <span class ='code'>\d</span>, shorthand for <span class ='string'>[^0-9]</span>.</p>
 </div>
 <button class="collapsible">Matching a whitespace</button>
 <div class="content">
-  <p><strong>Use \s</strong></p>
-  <p>\s is shorthand for [ \r\n\t\f\v]. \S is the opposite, matching what is not whitespace: [^ \r\n\t\f\v].</p>
+  <p><strong>Use <span class ='code'>\s</span></strong></p>
+  <p><span class ='code'>\s</span> is shorthand for <span class ='string'>[ \r\n\t\f\v]</span>. <span class ='code'>\S</span> is the opposite, matching what is not whitespace: <span class ='string'>[^ \r\n\t\f\v]</span>.</p>
 </div>
 <button class="collapsible">Matching any character</button>
 <div class="content">
-  <p><strong>. (dot) matches any single character (including a space), except the newline (\n) character</strong></p>
-  <p>Using the  re.S (re.DOTALL) flag with a searching function forces the dot to match a new line character.
+  <p><strong><span class ='code'> . </span>(dot) matches any single character (including a space), except the newline <span class ='code'>(\n)</span> character</strong></p>
+  <p>Using the <span class ='code'>re.S (re.DOTALL)</span> flag with a searching function forces the dot to match a new line character.
 </p>
 </div>
 <button class="collapsible">Matching a character with a set of options</button>
 <div class="content">
-  <p><strong>Put the set of matching options in square brackets: [...].
-Any of the characters enclosed within the square brackets [ ] is a matching option for a single character from the input text.
+  <p><strong>Put the set of matching options in square brackets: <span class ='code'>[...]</span>. Any of the characters enclosed within the square brackets <span class ='code'>[ ]</span> is a matching option for a single character from the input text.
 </strong></p>
-  <p>e.g. defen[cs]e matches both “defence” and “defense”. 
-[^...] is the opposite, matching anything but what is in the set e.g <[^>]> matches an html tag with any content. 
-An hyphen (-) can indicate a range of characters in a set e.g. [a-fA-F], [0-5].
-</p>
+  <p>e.g. <span class ='string'>defen[cs]e</span> matches both “defence” and “defense”. <span class ='string'>[^...]</span> is the opposite, matching anything but what is in the set, e.g. <span class ='string'>&lt;[^>]&gt;</span> matches an html tag with any content. 
+An hyphen <span class ='string'> - </span> can indicate a range of characters in a set e.g. <span class ='string'>[a-fA-F] [0-5]</span>.
+</p>   
 </div>
 <button class="collapsible">Matching a literal hyphen literally when in a set
 </button>
 <div class="content">
   <p><strong>Place the hyphen in first or last position in the set, or escape it.
 </strong></p>
-  <p>e.g. [-abc], [abc-], [ab\-c].</p>
+  <p>e.g. <span class ='string'>[-abc] [abc-] [ab\-c]</span>.</p>
 </div>
 <button class="collapsible">Matching a special character literally when in a set</button>
 <div class="content">
   <p><strong>Special characters lose their special meaning inside sets.</strong></p>
-  <p>e.g. the special characters in the set [().,*+?|] match themselves literally.</p>
+  <p>e.g. the special characters in the set <span class ='string'>[().,*+?|]</span> match themselves literally.</p>
 </div>
 <button class="collapsible">Matching a special character literally when outside a set</button>
 <div class="content">
-  <p><strong>Precede the special character with a backslash \ to remove its special meaning.</strong></p>
-  <p>e.g \. matches a literal dot, such as in "hello.world", \? matches a literal question mark, such as in "maybe?", \* matches a literal asterisk, such as in "a * b". </p>
+  <p><strong>Precede the special character with a backslash <span class ='code'> \ </span>to remove its special meaning.</strong></p>
+  <p>e.g <span class ='string'>\.</span> matches a literal dot, such as in "hello.world", <span class ='string'>\?</span> matches a literal question mark, such as in "maybe?", <span class ='string'>\*</span> matches a literal asterisk, such as in "a * b". </p>
 </div>
 <button class="collapsible">Matching a literal backslash when outside a set</button>
 <div class="content">
-  <p><strong>Use double backslashes \\  to escape the backslash, using a raw string (prefixed with “r”).</strong></p>
-  <p>e.g. r’\\’ or r’[\\]’ matches “\” in “foo\bar”.
+  <p><strong>Use double backslashes <span class ='code'>\\</span> to escape the backslash, using a raw string (prefixed with “r”).</strong></p>
+  <p>e.g. r’<span class ='string'>\\’</span> or <span class ='string'>r’[\\]’</span> matches “\” in “foo\bar”.
 It’s good practice to use a raw string to specify a regular expression in Python whenever it contains backslashes.
 </p>
 </div>
 <button class="collapsible">Making a character or set optional (any number of occurrences possible)</button>
 <div class="content">
-  <p><strong>Put an asterisk (*) behind the expression</strong></p>
-  <p>e.g, a* matches zero or more “a” characters (“”, “a”, “aa”, “aaa”, …)
-x*, \d*, \w*, … etc. can match a zero-length string or sequence(“”).</p>
+  <p><strong>Append an asterisk<span class ='code'> * </span>to the expression</strong></p>
+  <p>e.g, <span class ='string'>a*</span> matches zero or more “a” characters (“”, “a”, “aa”, “aaa”, …)
+<span class ='string'>x*, \d*, \w*, </span> … etc. can match a zero-length string or sequence(“”).</p>
 </div>
 <button class="collapsible">Making a character or set optional (zero or one occurrence possible)</button>
 <div class="content">
-  <p><strong>Put question mark (?) behind the expression</strong></p>
-  <p>e.g. colou?r matches both “color” and “colour”,
-defen[dcs]?[e]? matches “defend”, “defence” and “defense”.</p>
+  <p><strong>Append a question mark<span class ='code'> ? </span>to the expression</strong></p>
+  <p>e.g. <span class ='string'>colou?r</span> matches both “color” and “colour”,
+<span class ='string'>defen[dcs]?[e]?</span> matches “defend”, “defence” and “defense”.</p>
 </div>
 <button class="collapsible">Making a character or set a requirement for a match (one or more occurrences possible </button>
 <div class="content">
-  <p><strong>Put a plus sign (+) behind the expression
+  <p><strong>Append a plus sign<span class ='code'> + </span>to the expression
 </strong></p>
-  <p>e.g. \d+ matches one or more digits (9, 42, 321, …).</p>
+  <p>e.g. <span class ='string'>\d+</span> matches one or more digits (9, 42, 321, …).</p>
 </div>
-<button class="collapsible">Getting the shortest possible match when using the *, +, ? quantifiers (non-greedy, or lazy behaviour)</button>
+<button class="collapsible">Getting the shortest possible match when using the <span class ='code'>*, +, ?</span> quantifiers (non-greedy, or lazy behaviour)</button>
 <div class="content">
   <p><strong>Put a question mark after the quantifier symbol: 
-*?, +?, ??
+<span class ='code'>*?, +?, ??</span>
 </strong></p>
-  <p>*, +, ? are “greedy”, trying to match the longest possible string, e.g. <.*> matches the whole string “&lt;p&gt;Hello World&lt;/p&gt;”, whereas  <.*?> matches “&lt;p&gt;”.
-/d+ matches “123” but /d+? matches “1”.</p>
+  <p><span class ='code'>*, +, ?</span> are “greedy”, trying to match the longest possible string, e.g. <span class ='string'>&lt;.*&gt;</span> matches the whole string “&lt;p&gt;Hello World&lt;/p&gt;”, whereas <span class ='string'>&lt;.*?&gt;</span> matches “&lt;p&gt;”. <span class ='string'>/d+</span> matches “123” but <span class ='string'>/d+?</span> matches “1”.</p>
 </div>
     <button class="collapsible">Specifying an exact number of repetitions of a character or set to be a match</button>
 <div class="content">
-  <p><strong>Put {m} after the expression</strong></p>
-  <p>e.g. Xv{4}X matches “XvvvvX”.
+  <p><strong>Put <span class ='code'>{m}</span> after the expression</strong></p>
+  <p>e.g. <span class ='string'>Xv{4}X</span> matches “XvvvvX”.
 </p>
 </div>
 <button class="collapsible">Specifying a min and max range of repetitions of a character or set to be a match</button>
 <div class="content">
-  <p><strong>Put {m, n} after the expression</strong></p>
-  <p>e.g. \d{1, 3} matches numbers made of one up to three digits
-{,n} is identical to {0,n}.</p>
+  <p><strong>Put <span class ='code'>{m, n}</span> after the expression</strong></p>
+  <p>e.g. <span class ='string'>\d{1, 3}</span> matches numbers made of one up to three digits. 
+<span class ='code'>{,n}</span} is identical to <span class ='code'>{0,n}</span>.</p>
 </div>
 <button class="collapsible">Specifying a minimum number of repetitions of a character or set to be a match (no upper limit)</button>
 <div class="content">
-  <p><strong>Put {m,} after the expression</strong></p>
-  <p>{m,} means at least m times, 
-{,} is identical to {0,} or *.</p>
+  <p><strong>Put <span class ='code'>{m,}</span> after the expression</strong></p>
+  <p><span class ='code'>{m,}</span> means at least <span class ='code'>m</span> times, 
+<span class ='code'>{,}</span> is identical to <span class ='code'>{0,}</span> or <span class ='code'> * </span>.</p>
 </div>
-<button class="collapsible">Getting the shortest possible match when using the {m, n} quantifiers (non-greedy, or lazy behaviour)</button>
+<button class="collapsible">Getting the shortest possible match when using the <span class ='code'>{m, n}</span> quantifiers (non-greedy, or lazy behaviour)</button>
 <div class="content">
-  <p><strong>Put a question mark after the expression:  {m,n}?</strong></p>
-  <p>e.g.  X{3,5}?. 
-{m,n} is “greedy”, trying to match the longest possible string.</p>
+  <p><strong>Put a question mark after the expression: <span class ='code'>{m,n}?</span></strong></p>
+  <p>e.g.  <span class ='string'>X{3,5}?</span>.  <span class ='code'>{m,n}</span> is “greedy”, trying to match the longest possible string.</p>
 </div>
 <button class="collapsible">Text required to be at the beginning of a string or of a new line to be a match</button>
 <div class="content">
-  <p><strong>Put the caret (^) anchor or \A in first position</strong></p>
-  <p>e.g.  ^Once, \AOnce, ^!!. With re.match(), the caret (^) anchor is redundant. 
-In a searching function using the re.MULTILINE flag, ^ matches both at the beginning of the string and at the beginning of any line within the string, but only at the beginning of the whole string without the flag. re.MULTILINE has no effect on \A.  re.M is shorthand for re.MULTILINE.</p>
+  <p><strong>Put the caret <span class ='code'>^</span> anchor or <span class ='code'>\A</span> in first position</strong></p>
+  <p>e.g.  <span class ='string'>^Once, \AOnce, ^!!</span>. With re.match(), the caret <span class ='code'>^</span> anchor is redundant. 
+In a searching function using the <span class ='code'>re.MULTILINE</span> flag, <span class ='code'>^</span> matches both at the beginning of the string and at the beginning of any line within the string, but only at the beginning of the whole string without the flag. <span class ='code'>re.MULTILINE</span> has no effect on <span class ='code'>\A</span>.  <span class ='code'>re.M</span> is shorthand for <span class ='code'>re.MULTILINE</span>.</p>
 </div>
 <button class="collapsible">Text required to be at the end of a string or of a new line to be a match</button>
 <div class="content">
-  <p><strong>Put a dollar ($) anchor or \Z in last position</strong></p>
-  <p>e.g.  time$, time\Z, \?$
-In a searching function using the re.MULTILINE flag, $ matches both at the end of the string and at the end of any line within the string, but only at the end of the whole string without the flag. re.MULTILINE has no effect on \Z. re.M is shorthand for re.MULTILINE. </p>
+  <p><strong>Put a dollar <span class ='code'>$</span> anchor or <span class ='code'>\Z</span> in last position</strong></p>
+  <p>e.g. <span class ='string'>time$, time\Z, \?$</span>
+In a searching function using the <span class ='code'>re.MULTILINE</span> flag, <span class ='code'>$</span> matches both at the end of the string and at the end of any line within the string, but only at the end of the whole string without the flag. <span class ='code'>re.MULTILINE</span> has no effect on <span class ='code'>\Z</span>. <span class ='code'>re.M</span> is shorthand for <span class ='code'>re.MULTILINE</span>. </p>
 </div>
     <button class="collapsible"> Text required to be at the beginning of words to be a match (such as prefixes) </button>
 <div class="content">
-  <p><strong>Put \b in front of the expression</strong></p>
-  <p>e.g. \breg\w+ matches words starting with “reg” such as “regular”.
-\B is the opposite: matching patterns within or at the end of words, such as hyphens or slashes.
+  <p><strong>Put <span class ='code'>\b</span> in front of the expression</strong></p>
+  <p>e.g. <span class ='string'>\breg\w+</span> matches words starting with “reg” such as “regular”.
+<span class ='code'>\B</span> in front of the expression is the opposite: matching patterns within or at the end of words, such as hyphens or slashes.
 </p>
 </div>
 <button class="collapsible">Text required to be at the end of words to be match (such as suffixes)</button>
 <div class="content">
-  <p><strong>Put \b behind the expression</strong></p>
-  <p>e.g. \w+ly\b matches words ending with “ly” such as “truly”.
-\B is the opposite:  matching patterns at the start or within words, such as hyphens or slashes.</p>
+  <p><strong>Put <span class ='code'>\b</span> behind the expression</strong></p>
+  <p>e.g. <span class ='string'>\w+ly\b</span> matches words ending with “ly” such as “truly”.
+<span class ='code'>\B</span> behind the expression is the opposite: matching patterns at the start or within words, such as hyphens or slashes.</p>
 </div>
 <button class="collapsible">Text required to be within words to be a match</button>
 <div class="content">
-  <p><strong>\B is the opposite of \b</strong></p>
-  <p>e.g \Bper\B will match “per” only if it appears within a larger word as in “operate”(not at the beginning or end of a word as in “per” or “super”). Useful for matching patterns within words or sequences, such as hyphens or slashes.
+  <p><strong><span class ='code'>\B</span> is the opposite of <span class ='code'>\b</span></strong></p>
+  <p>e.g <span class ='string'>\Bper\B</span> will match “per” only if it appears within a larger word as in “operate”(not at the beginning or end of a word as in “per” or “super”). Useful for matching patterns within words or sequences, such as hyphens or slashes.
 </p>
 </div>
 <button class="collapsible">Automatically adding backslashes in an expression to escape special characters</button>
 <div class="content">
-  <p><strong>Use the re.escape() method</strong></p>
-  <p>re.escape() saves you the trouble of putting in all the backslashes manually when you have many special characters that must be matched literally. It returns a copy of the expression with each nonword character (anything other than a letter, digit, or underscore) preceded by a backslash e.g. re.escape('red^green(blue)|yellow') returns the expression string 'red\^green\(blue\)\|yellow' , and re.search(re.escape('red^green(blue)|yellow'), 'red^green(blue)|yellow') matches  'red^green(blue)|yellow' literally. </p>
+  <p><strong>Use the <span class ='code'>re.escape()</span> method</strong></p>
+  <p><span class ='code'>re.escape()</span> saves you the trouble of putting in all the backslashes manually when you have many special characters that must be matched literally. It returns a copy of the expression with each nonword character (anything other than a letter, digit, or underscore) preceded by a backslash e.g. <span class ='string'>re.escape('red^green(blue)|yellow')</span> returns the expression string 'red\^green\(blue\)\|yellow' , and <span class ='string'>re.search(re.escape('red^green(blue)|yellow'), 'red^green(blue)|yellow')</span> matches "red^green(blue)|yellow" literally. </p>
 </div>
 <button class="collapsible">Specify a set of alternatives on which to match</button>
 <div class="content">
-  <p><strong>Insert the pipe character | between the alternative expressions</strong></p>
-  <p>e.g. [0-9]+|[a-f]+ means one or more digits, or one or more smallcaps from a to f.
-Alternation is non-greedy: stops when the first match is found, looking at the expressions from left to right e.g. re.search('a|b|c', 'abc') matches “a”. </p>
+  <p><strong>Insert the pipe character <span class ='code'> | </span> between the alternative expressions</strong></p>
+  <p>e.g. <span class ='string'>[0-9]+|[a-f]+</span> means one or more digits, or one or more smallcaps from a to f.
+Alternation is non-greedy: stops when the first match is found, looking at the expressions from left to right e.g. <span class ='string'>re.search('a|b|c', 'abc')</span> matches “a”. </p>
 </div>
 
 <h2 id='groups'>Using groups for flexible matching</h2>
