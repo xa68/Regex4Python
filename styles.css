@@ -29,9 +29,13 @@ nav a {
   padding: 5px 5px;
 }
 
-.code {
+.code, .string{
 font-family: Consolas, "Courier New", monospace;
-background-color: #ecf0f3
+background-color: #ecf0f3;
+}
+
+.string {
+color: #008000;
 }
 
 .collapsible {
