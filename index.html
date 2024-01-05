@@ -178,18 +178,80 @@ In a searching function using the re.MULTILINE flag, $ matches both at the end o
 Alternation is non-greedy: stops when the first match is found, looking at the expressions from left to right e.g. re.search('a|b|c', 'abc') matches “a”. </p>
 </div>
 
-
-
 <h2 id='groups'>Using groups for flexible matching</h2>
-<button class="collapsible">text</button>
+<button class="collapsible">Creating subexpressions for specific pattern matching</button>
 <div class="content">
-  <p><strong>text</strong></p>
-  <p>text</p>
+  <p><strong>Put in the subexpression in parentheses: (...)
+</strong></p>
+  <p>The characters in the parentheses make a group to which specific matching rules can apply within a larger expression, e.g,. in abc+ the metacharacter ‘+’ applies only to “c”, while in (abc)+ it applies to the entire string “abc”.
+You can nest groups e.g. (abc(123)?)+ 
+</p>
 </div>
-<button class="collapsible">text</button>
+<button class="collapsible">Using groups in expressions to capture the matched elements</button>
 <div class="content">
-  <p><strong>text</strong></p>
-  <p>text</p>
+  <p><strong>Parentheses create capture groups, storing the matched text for later reference</strong></p>
+  <p>e.g. ((0\d)([.](\d{2})){4}) matches 10-digit phone numbers in the format 01.23.45.67.89</p>
+</div>
+<button class="collapsible">Checking that a certain pattern comes after (positive lookahead)</button>
+<div class="content">
+  <p><strong>For a positive lookahead, put ?= in first position inside the group: (?=...)
+</strong></p>
+  <p> e.g. ABC(?=[A-Z0-9]{5}) matches “ABC” if it is immediately followed by 5 uppercase letters or digits such as "ABC1A2B3"</p>
+</div>
+<button class="collapsible">Checking that a certain pattern immediately follows (positive lookahead)</button>
+<div class="content">
+  <p><strong>For a positive lookahead, put ?= in first position inside the group: (?=...)</strong></p>
+  <p>e.g. ABC(?=[A-Z0-9]{5}) matches “ABC” if it is immediately followed by 5 uppercase letters or digits such as "ABC1A2B3"</p>
+</div>
+<button class="collapsible">Checking that a certain pattern does not immediately follow (negative lookahead)</button>
+<div class="content">
+  <p><strong>For a negative lookahead, put ?! in first position inside the group: (?!...)</strong></p>
+  <p>e.g. play(?!\s+the) matches “play” if it is not followed by “ the”, as in  “played the piano”</p>
+</div>
+<button class="collapsible">Checking that a certain pattern comes immediately before (positive lookbehind)</button>
+<div class="content">
+  <p><strong>For a positive lookbehind, put ?&lt;= in first position inside the group: (?&lt;=...)
+</strong></p>
+  <p>e.g. (?&lt;=geo)metric matches “metric” if it is preceded by “geo”, but does not match with “isometric” or “parametric”
+</p>
+</div>
+<button class="collapsible">Checking that a certain pattern does not come immediately before (negative lookbehind)</button>
+<div class="content">
+  <p><strong>For a negative lookbehind, put ?&lt;! in first position inside the group: (?&lt;!...)</strong></p>
+  <p>e.g. (?&lt;!grand\s)total will match “total” if it is  not preceded by “grand ”,  as in “total” or “subtotal”</p>
+</div>
+<button class="collapsible">Creating a non-capturing group (matched text is not stored)</button>
+<div class="content">
+  <p><strong>Put ?: in first position inside the group: (?:...)</strong></p>
+  <p>e.g. (?:[Mm]adam|[Ss]ir) 
+Useful when matching on alternatives or required patterns, without the need to capture the text. 
+Can improve efficiency by reducing processing and memory usage.</p>
+</div>
+<button class="collapsible">Referencing matched text by order of capture</button>
+<div class="content">
+  <p><strong>Put \n after the expression, where n is the nth captured match</strong></p>
+  <p>e.g.  (\w+)-\1 matches a sequence of word characters, followed by a hyphen, immediately followed by the same sequence (first capture).
+Useful for finding repeated words such as “the the”, or extracting repeated sequences such as matching word pairs.</p>
+</div>
+<button class="collapsible">Naming a group for backreference by name</button>
+<div class="content">
+  <p><strong>To name a group: put ?P and the group’s name in angle brackets in first position inside the group: (?P<name>...). 
+To back-reference to the named group, put ?P= and the name of the group in first position in a separate group: (?P=name...)</strong></p>
+  <p>e.g. (?P&lt;w1&gt;\w+),(?P&lt;w2&gt;\w+) gives m.group('w1'), m.group('w2'), m.group('w1', 'w2'), with m being the returned match object. 
+The angle brackets (&lt; and &gt;) are required around name when creating a named group but not when referring to it later e.g. (?P&lt;num&gt;\d+)\.(?P=num) matches a sequence of digits, followed by a literal dot, followed by the same sequence of digits again.
+Useful for finding repeated sequences or checking that two words or numbers are identical.
+</p>
+</div>
+<button class="collapsible">Choosing between two alternatives expressions, depending on a third (if-then-else logic)</button>
+<div class="content">
+  <p><strong>Following the expression acting as the condition, add a group having in first position  ?(n), if using an unnamed conditional group, or ?(name), if named, followed  by the two alternative expressions separated by the pipe character |</strong></p>
+  <p>The group will use the first alternative to find a match if the conditional expression itself found a match, otherwise it will use the second alternative, e.g.  ^(##)?(?(1)RefA|RefB) matches “##RefA” if “##” is found at the beginning of the text, otherwise matches "RefB ". 
+Here is the same example, using a named group: ^(?P<sh>##)?(?(sh)typeA|typeB)</p>
+</div>
+<button class="collapsible">Adding comments inside a regular expression</button>
+<div class="content">
+  <p><strong>Put ?# in first position inside the group </strong></p>
+  <p>Anything contained in the sequence (?#...) is ignored by the regex parser. e.g. ^(##)?(?# this is a comment)\W+'</p>
 </div>
 
 <h2 id='search'>Looking for matches and extracting matches
