@@ -67,6 +67,6 @@ background-color: #ecf0f3
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.2s ease-out;
-  background-color:  #fffff0;
+  background-color:  #f9f9f9;
   font-family: Helvetica, sans serif;
 }
