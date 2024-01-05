@@ -256,16 +256,58 @@ Here is the same example, using a named group: ^(?P<sh>##)?(?(sh)typeA|typeB)</p
 
 <h2 id='search'>Looking for matches and extracting matches
 </h2>
-<button class="collapsible">text</button>
+<button class="collapsible">Scanning a string for a match</button>
 <div class="content">
-  <p><strong>text</strong></p>
-  <p>text</p>
+  <p><strong>Use re.search()</strong></p>
+  <p>e.g. re.search(r'fox', 'the brown fox')
+The re.search() function searches for the first occurrence of the pattern within the string, returning a match object if it finds a match, and None otherwise.</p>
 </div>
-<button class="collapsible">text</button>
+<button class="collapsible">Specifying a range in the input string that limits where to look for matches</button>
 <div class="content">
-  <p><strong>text</strong></p>
-  <p>text</p>
+  <p><strong>Pass the pos and endpos optional arguments to the search() method, called on a compiled expression object</strong></p>
+  <p>e.g.  re_obj = re.compile(r'\d+'); 
+m = re_obj.search('red123green', 2, 7); 
+m gives match='123'; 
+m.pos, m.endpos gives (2, 7). 
+Specifying only  <pos> and omitting <endpos>, the search applies to the substring from <pos> to the end of the string eg re_obj.search(s, 6). 
+Anchors such as caret (^) or \A and  dollar sign ($) or \Z still refer to the start and end of the entire input string, not the substring delimited by pos and endpos.</p>
 </div>
+<button class="collapsible">Getting the start and end index locations of the effective range used in the input string</button>
+<div class="content">
+  <p><strong>Use the m.pos and m.endpos attributes, with m being the match object</strong></p>
+  <p>m.pos and m.endpos are respectively the  start and end index locations of the effective range used in the input string (whole string or a slice given by the pos and endpos parameters) e.g. re_obj = re.compile(r'\d+'); m = re_obj.search('red123green', 2, 7); m gives match='123'; m.pos, m.endpos gives (2, 7)</p>
+</div>
+<button class="collapsible">Looking for a match only at the beginning of the string</button>
+<div class="content">
+  <p><strong>Use re.match()</strong></p>
+  <p>e.g. re.match(r'the, 'the lowercase').
+With re.match(), the caret (^) and /A anchors are redundant.</p>
+</div>
+<button class="collapsible">Looking for a match of the entire string (full match)</button>
+<div class="content">
+  <p><strong>Use re.fullmatch()</strong></p>
+  <p>re.fullmatch() returns a match only if the expression matches  the input string in its entirety, and returns None otherwise, eg re.fullmatch(r'\d{2}-\d{2}-\d{4}’, '12-07-2023')</p>
+</div>
+<button class="collapsible">Getting a list of all (non-overlapping) matches</button>
+<div class="content">
+  <p><strong>Use re.findall()</strong></p>
+  <p>re.findall() returns a list of all non-overlapping matches from the input string.  It scans the string from left to right and returns all non-overlapping matches in the order found e.g. re.findall(r'\d+', '123, 42, and 6789') returns ['123', '42', '6789']. 
+If the expression contains a capturing group, then the return list contains only the match for the group, not the entire match e.g  re.findall(r'(#[a-z]+) [\w\s]* !![a-z]+', '#this and also !!that')  returns  ['#this']. 
+Use findall() on  a compiled expression object if you need to limit the range of the input string where to look for matches  e.g. 
+re_obj = re.compile(r'\d+')
+m = re_obj.findall('r12g34b56', 4, 9)
+m gives ['34', '56']
+m.pos, m.endpos gives (4, 9)</p>
+</div>
+<button class="collapsible">Getting an iterator of all match objects</button>
+<div class="content">
+  <p><strong>Use re.finditer()</strong></p>
+  <p>re.finditer() scans the input string for non-overlapping matches of the given pattern and returns an iterator that yields the match objects from any it finds, scanning the string from left to right and returning in the order it finds them.
+Call finditerl() on  a compiled expression object if there is need to limit the range of the input string where to look for matches e.g.
+re_obj = re.compile(r'\d+')
+m = re_obj.finditer('r12g34b56', 4, 9)</p>
+</div>
+
 
 <h2 id='flags'>Fine-tuning search with flags
 </h2>
