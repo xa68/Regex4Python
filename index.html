@@ -246,7 +246,7 @@ Useful for finding repeated sequences or checking that two words or numbers are 
 <div class="content">
   <p><strong>Following the expression acting as the condition, add a group having in first position  ?(n), if using an unnamed conditional group, or ?(name), if named, followed  by the two alternative expressions separated by the pipe character |</strong></p>
   <p>The group will use the first alternative to find a match if the conditional expression itself found a match, otherwise it will use the second alternative, e.g.  ^(##)?(?(1)RefA|RefB) matches “##RefA” if “##” is found at the beginning of the text, otherwise matches "RefB ". 
-Here is the same example, using a named group: ^(?P<sh>##)?(?(sh)typeA|typeB)</p>
+Here is the same example, using a named group: ^(?P&lt;sh&gt;##)?(?(sh)typeA|typeB)</p>
 </div>
 <button class="collapsible">Adding comments inside a regular expression</button>
 <div class="content">
@@ -352,16 +352,49 @@ This use of flags is  available to re.compile() as well. The .flags attribute of
 
 <h2 id='sub'>Replacing and modifying parts of text
 </h2>
-<button class="collapsible">text</button>
+<button class="collapsible">Replacing matching parts of a text with other text</button>
 <div class="content">
-  <p><strong>text</strong></p>
-  <p>text</p>
+  <p><strong>
+Use re.sub()</strong></p>
+  <p>re.sub() scans a string from left to right for matches, replacing the non-overlapping matching portions with the specified replacement string, and returns the resulting string, e.g. re.sub('\.\d+\.', '//', 'red.123.green.789.blue') returns 'red//green//blue'. 
+If re.sub() doesn’t find any matches, it returns the string unchanged. 
+Using the optional count parameter, re.sub() performs at most the number of  replacements specified.
+If the expression specifies a zero-length match such as 'a*', or 'b*', or 'c*', etc.  then re.sub() will substitute the replacement into every zero-length  position in the string,  e.g.
+re.sub('x*', '*', 'red') returns '*r*e*d*', and re.sub('\Bx*', '*', 'red') returns 'r*e*d' (\Bx* means a zero-length string not at a word boundary).
+sub() is available for compiled expression objects as well eg. re.compile('\.\d+\.').sub('//', 'red.123.green.789.blue'), but won’t  support the pos and endpos parameters.</p>
 </div>
-<button class="collapsible">text</button>
+<button class="collapsible">Getting the number of substitutions together with the modified text</button>
 <div class="content">
-  <p><strong>text</strong></p>
-  <p>text</p>
+  <p><strong>Use re.subn()</strong></p>
+  <p>
+re.subn() returns information regarding the number of substitutions made in a two-tuple consisting of the modified string and the number of substitutions made, e.g.  re.subn(r'\w+', 'xxx', 'red,green,blue,yellow') gives 
+('xxx,xxx,xxx,xxx', 4)
+</p>
 </div>
+<button class="collapsible">Making replacements with captured matches</button>
+<div class="content">
+  <p><strong>Specify the group(s) number or name inside angle brackets in the expression following the patterns \n, \g&lt;number&gt; or \g&lt;name&gt;</strong></p>
+  <p>e.g. with a group number, re.sub(r'(\d+)', r'\g&lt;1&gt;.00', 'total 123 chf') returns 'total 123.00 chf'  (\1 can replace \g&lt;1&gt; in this example).
+The backreference \g&lt;0&gt; refers to the text of the entire match. This is valid even when there are no grouping parentheses in the expression e.g. re.sub(r'\d+', '#\g&lt;0&gt;#', 'red 123 green') returns 'red #123# green'
+e.g. with a group names, re.sub(r'red,(?P&lt;c1&gt;\w+),(?P&lt;c2&gt;\w+),yellow', 'red,\g&lt;c2&gt;,\g&lt;c1&gt;,yellow', 'red,Green,Blue,yellow')  returns 'red,Blue,Green,yellow'</p>
+</div>
+<button class="collapsible">Using a function to generate the replacement string</button>
+<div class="content">
+  <p><strong>
+Specify the replacement argument as a function in re.sub()
+</strong></p>
+  <p>
+When re.sub() calls that function for each match found it passes each corresponding match as an argument to the function to provide information about the match e.g. re.sub('\d+',lambda x: x.group() * 2, 'red123green') returns 'red123123green'</p>
+</div>
+<button class="collapsible">Splitting a string into substrings using an expression as a delimiter</button>
+<div class="content">
+  <p><strong>Use re.split()</strong></p>
+  <p>re.split() splits a string into substrings using an expression as a delimiter and returns a list of substrings e.g.  re.split('\s*[-;*]\s*', 'red-green  ;  blue * yellow') returns ['red', 'green', 'blue', 'yellow']. 
+When using groups in the expression the delimiter characters will be included in the returned list as well. You can put the delimiters expression in a non-capturing group to exclude them from the returned list e.g. (?:\s*[,;/]\s*). 
+split() is available for compiled expression objects as well eg. re.compile('\s*[-;*]\s*').split( 'red-green  ;  blue * yellow'), but won’t  support the pos and endpos parameters.
+</p>
+</div>
+
 
 <h2 id='objects'>Using the match objects returned by search functions
 </h2>
