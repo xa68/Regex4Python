@@ -308,18 +308,46 @@ re_obj = re.compile(r'\d+')
 m = re_obj.finditer('r12g34b56', 4, 9)</p>
 </div>
 
-
 <h2 id='flags'>Fine-tuning search with flags
 </h2>
-<button class="collapsible">text</button>
+<button class="collapsible">Making matching case-insensitive</button>
 <div class="content">
-  <p><strong>text</strong></p>
-  <p>text</p>
+  <p><strong>Add re.I or re.IGNORECASE as an argument</strong></p>
+  <p>e.g.  re.search('[a-z]+', 'aBcDeF', re.I). 
+The IGNORECASE flag is available to re.compile() as well. The .flags attribute of the compiled expression object shows the flags that are in effect.</p>
 </div>
-<button class="collapsible">text</button>
+<button class="collapsible">Applying the caret (^) and dollar ($) anchors on each line in a multiline-string</button>
 <div class="content">
-  <p><strong>text</strong></p>
-  <p>text</p>
+  <p><strong>Add re.M  or re.MULTILINE as an argument</strong></p>
+  <p>e.g.  re.search(^Name: \w+\nAge: \d+\nId: \d{6}, user, re.M). 
+Using the re.MULTILINE flag, ^ ($) matches both at the beginning (end) of the input string and at the beginning (end)  of any line within the string, but only at the beginning (end) of the whole string without the flag. re.MULTILINE has no effect on the \A or \Z anchors.
+The MULTILINE flag is available to re.compile() as well. The .flags attribute of the compiled expression object shows the flags that are in effect.</p>
+</div>
+<button class="collapsible">Forcing the . dot character to match a newline character.(\n)</button>
+<div class="content">
+  <p><strong>Add re.S or re.DOTALL as an argument</strong></p>
+  <p>The dot metacharacter matches any character except the newline character (\n). The DOTALL flag lifts this restriction e.g. re.search('Description:.*Price', specs, re.S) matches the full text between “Description: and “Price” in the specs string.
+The DOTALL flag is available to re.compile() as well. The .flags attribute of the compiled expression object shows the flags that are in effect.</p>
+</div>
+<button class="collapsible">Combining flag arguments</button>
+<div class="content">
+  <p><strong>Insert the pipe character | between the flags</strong></p>
+  <p>e.g re.search(r'abc|xyz', 'aBc\nXYZ', re.I | re.M). 
+Combined flags are available to re.compile() as well. The .flags attribute of the compiled expression object shows the flags that are in effect.</p>
+</div>
+<button class="collapsible">Specify the flag(s) within the expression</button>
+<div class="content">
+  <p><strong>Put the flag symbol(s) in a separate group in first position in the expression following the pattern (?symbols)</strong></p>
+  <p>e.g. re.search('(?im)^green', 'RED\nGREEN\nBLUE\n') can replace re.search('^green', 'RED\nGREEN\nBLUE\n', re.I|re.M). In this example, (?im) together activates both the case-insensitive (i) and multi-line (m) matching modes for the regular expression pattern that follows it. 
+This use of flags is  available to re.compile() as well. The .flags attribute of the compiled expression object shows the flags that are in effect.</p>
+</div>
+<button class="collapsible">Specifying a flag for a specific group </button>
+<div class="content">
+  <p><strong>Put the flag symbol(s) in first position in the group following the pattern (?symbols:) to activate it, precede the symbol by a minus sign to deactivate the flag
+</strong></p>
+  <p>e.g (?i:Cat-\w+):\s(?m:.*)$ matches “Cat-” ( case-insensitive match) followed by one or more word characters, a colon, a space, and a  multiline match for any text until the end of the string.
+This use of flags is  available to re.compile() as well. The .flags attribute of the compiled expression object shows the flags that are in effect.
+</p>
 </div>
 
 <h2 id='sub'>Replacing and modifying parts of text
