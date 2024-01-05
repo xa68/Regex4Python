@@ -29,6 +29,11 @@ nav a {
   padding: 5px 5px;
 }
 
+.code {
+font-family: Consolas, "Courier New", monospace;
+background-color: #ecf0f3
+}
+
 .collapsible {
   background-color: #777;
   color: white;
@@ -62,6 +67,6 @@ nav a {
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.2s ease-out;
-  background-color: #f1f1f1;
+  background-color:  #fffff0;
   font-family: Helvetica, sans serif;
 }
