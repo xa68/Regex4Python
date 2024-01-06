@@ -30,7 +30,7 @@ nav a {
 }
 
 .code, .string{
-font-family: Consolas, "Courier New", monospace;
+font-family: "Courier New", Consolas, monospace;
 background-color: #ecf0f3;
 }
 
