@@ -1,12 +1,18 @@
-h1, h2 {
+h1, h2, h4 {
 font-family: Helvetica, sans-serif;
 color: grey;
+padding: 10px;
 }
 
 h2 {
 margin-top: 10px;
 margin-bottom: 10px;
 }
+
+h4 {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  }
 
 nav {
 font-family: sans-serif;
@@ -27,6 +33,18 @@ nav a {
   text-decoration: none;  /* Remove underline from links */
   color: #333;
   padding: 5px 5px;
+}
+
+.test-regex{
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 15px;
+}
+
+.test-string {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 15px;
 }
 
 .code, .string{

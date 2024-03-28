@@ -39,9 +39,22 @@
     </div>
   </div>
   </nav>
-<h1>Quick reference for regular expressions in Python</h1>
 
-<h2 id='matching'>Matching text patterns</h2>
+<h1>Test your regex</h1>
+<div class="test-regex">
+  <label for="test-regex">Enter the regular expression to test: </label>
+  <input type="text" id="test-regex" name="test-regex">
+</div>
+<div class="test-string">
+  <label for="test-string">Enter the text to search for matches: </label>
+  <input type="text" id="test-string" name="test-string">
+</div>
+
+<h1>Quick reference for regular expressions in Python</h1>
+<hr style="border: 1px solid #524949; width: 98%; margin: 10px auto;">
+
+<h2 id='matching'>Matching patterns</h2>
+<h4 id="matching_text">Text patterns</h4>
 <button class="collapsible">Matching text literally</button>
 <div class="content">
   <p><strong>Use a string literal</strong></p>
@@ -72,7 +85,7 @@ The <span class ='code'>re.I (re.IGNORECASE)</span> flag makes matching case-ins
   <p>Using the <span class ='code'>re.S (re.DOTALL)</span> flag with a searching function forces the dot to match a new line character.
 </p>
 </div>
-<button class="collapsible">Matching a character with a set of options</button>
+<button class="collapsible">Matching a character among a set of options</button>
 <div class="content">
   <p><strong>Put the set of matching options in square brackets: <span class ='code'>[...]</span>. Any of the characters enclosed within the square brackets <span class ='code'>[ ]</span> is a matching option for a single character from the input text.
 </strong></p>
@@ -80,7 +93,14 @@ The <span class ='code'>re.I (re.IGNORECASE)</span> flag makes matching case-ins
 An hyphen <span class ='string'>-</span> can indicate a range of characters in a set e.g. <span class ='string'>[a-fA-F] [0-5]</span>.
 </p>   
 </div>
-<button class="collapsible">Matching a literal hyphen literally when in a set
+<button class="collapsible">Specify a set of alternatives on which to match</button>
+<div class="content">
+  <p><strong>Insert the pipe character <span class ='code'>|</span> between the alternative expressions</strong></p>
+  <p>e.g. <span class ='string'>[0-9]+|[a-f]+</span> means one or more digits, or one or more smallcaps from a to f.
+Alternation is non-greedy: stops when the first match is found, looking at the expressions from left to right e.g. <span class ='string'>re.search('a|b|c', 'abc')</span> matches “a”. </p>
+</div>
+<h4 id="matching_special_characters">Special characters</h4>
+<button class="collapsible">Matching an hyphen literally when in a set
 </button>
 <div class="content">
   <p><strong>Place the hyphen in first or last position in the set, or escape it
@@ -104,6 +124,12 @@ An hyphen <span class ='string'>-</span> can indicate a range of characters in a
 It’s good practice to use a raw string to specify a regular expression in Python whenever it contains backslashes.
 </p>
 </div>
+<button class="collapsible">Automatically adding backslashes in an expression to escape special characters</button>
+<div class="content">
+  <p><strong>Use the <span class ='code'>re.escape()</span> method</strong></p>
+  <p><span class ='code'>re.escape()</span> saves you the trouble of putting in all the backslashes manually when you have many special characters that must be matched literally. It returns a copy of the expression with each nonword character (anything other than a letter, digit, or underscore) preceded by a backslash e.g. <span class ='string'>re.escape('red^green(blue)|yellow')</span> returns the expression string <span class ='code'>'red\^green\(blue\)\|yellow'</span>, and <span class ='string'>re.search(re.escape('red^green(blue)|yellow'), 'red^green(blue)|yellow')</span> matches "red^green(blue)|yellow" literally. </p>
+</div>
+<h4 id="quantifiers">Quantifiers</h4>
 <button class="collapsible">Making a character or set optional (any number of occurrences possible)</button>
 <div class="content">
   <p><strong>Append an asterisk <span class ='code'>*</span> to the expression</strong></p>
@@ -116,7 +142,7 @@ It’s good practice to use a raw string to specify a regular expression in Pyth
   <p>e.g. <span class ='string'>colou?r</span> matches both “color” and “colour”,
 <span class ='string'>defen[dcs]?[e]?</span> matches “defend”, “defence” and “defense”.</p>
 </div>
-<button class="collapsible">Making a character or set a requirement for a match (one or more occurrences possible </button>
+<button class="collapsible">Making a character or set a requirement for a match (one or more occurrences possible) </button>
 <div class="content">
   <p><strong>Append a plus sign <span class ='code'>+</span> to the expression
 </strong></p>
@@ -152,6 +178,7 @@ It’s good practice to use a raw string to specify a regular expression in Pyth
   <p><strong>Put a question mark after the expression: <span class ='code'>{m,n}?</span></strong></p>
   <p>e.g.  <span class ='string'>X{3,5}?</span>.  <span class ='code'>{m,n}</span> is “greedy”, trying to match the longest possible string.</p>
 </div>
+<h4 id="anchors">Start/end anchors</h4>
 <button class="collapsible">Text required to be at the beginning of a string or of a new line to be a match</button>
 <div class="content">
   <p><strong>Put the caret <span class ='code'>^</span> anchor or <span class ='code'>\A</span> in first position</strong></p>
@@ -183,19 +210,9 @@ In a searching function using the <span class ='code'>re.MULTILINE</span> flag, 
   <p>e.g <span class ='string'>\Bper\B</span> will match “per” only if it appears within a larger word as in “operate”(not at the beginning or end of a word as in “per” or “super”). Useful for matching patterns within words or sequences, such as hyphens or slashes.
 </p>
 </div>
-<button class="collapsible">Automatically adding backslashes in an expression to escape special characters</button>
-<div class="content">
-  <p><strong>Use the <span class ='code'>re.escape()</span> method</strong></p>
-  <p><span class ='code'>re.escape()</span> saves you the trouble of putting in all the backslashes manually when you have many special characters that must be matched literally. It returns a copy of the expression with each nonword character (anything other than a letter, digit, or underscore) preceded by a backslash e.g. <span class ='string'>re.escape('red^green(blue)|yellow')</span> returns the expression string <span class ='code'>'red\^green\(blue\)\|yellow'</span>, and <span class ='string'>re.search(re.escape('red^green(blue)|yellow'), 'red^green(blue)|yellow')</span> matches "red^green(blue)|yellow" literally. </p>
-</div>
-<button class="collapsible">Specify a set of alternatives on which to match</button>
-<div class="content">
-  <p><strong>Insert the pipe character <span class ='code'>|</span> between the alternative expressions</strong></p>
-  <p>e.g. <span class ='string'>[0-9]+|[a-f]+</span> means one or more digits, or one or more smallcaps from a to f.
-Alternation is non-greedy: stops when the first match is found, looking at the expressions from left to right e.g. <span class ='string'>re.search('a|b|c', 'abc')</span> matches “a”. </p>
-</div>
 
 <h2 id='groups'>Using groups for flexible matching</h2>
+<h4 id="subexpressions">Subexpressions (groups)</h4>
 <button class="collapsible">Creating subexpressions for specific pattern matching</button>
 <div class="content">
   <p><strong>Put in the subexpression in parentheses: (...)
@@ -208,34 +225,6 @@ You can nest groups e.g. (abc(123)?)+
 <div class="content">
   <p><strong>Parentheses create capture groups, storing the matched text for later reference</strong></p>
   <p>e.g. ((0\d)([.](\d{2})){4}) matches 10-digit phone numbers in the format 01.23.45.67.89</p>
-</div>
-<button class="collapsible">Checking that a certain pattern comes after (positive lookahead)</button>
-<div class="content">
-  <p><strong>For a positive lookahead, put ?= in first position inside the group: (?=...)
-</strong></p>
-  <p> e.g. ABC(?=[A-Z0-9]{5}) matches “ABC” if it is immediately followed by 5 uppercase letters or digits such as "ABC1A2B3"</p>
-</div>
-<button class="collapsible">Checking that a certain pattern immediately follows (positive lookahead)</button>
-<div class="content">
-  <p><strong>For a positive lookahead, put ?= in first position inside the group: (?=...)</strong></p>
-  <p>e.g. ABC(?=[A-Z0-9]{5}) matches “ABC” if it is immediately followed by 5 uppercase letters or digits such as "ABC1A2B3"</p>
-</div>
-<button class="collapsible">Checking that a certain pattern does not immediately follow (negative lookahead)</button>
-<div class="content">
-  <p><strong>For a negative lookahead, put ?! in first position inside the group: (?!...)</strong></p>
-  <p>e.g. play(?!\s+the) matches “play” if it is not followed by “ the”, as in  “played the piano”</p>
-</div>
-<button class="collapsible">Checking that a certain pattern comes immediately before (positive lookbehind)</button>
-<div class="content">
-  <p><strong>For a positive lookbehind, put ?&lt;= in first position inside the group: (?&lt;=...)
-</strong></p>
-  <p>e.g. (?&lt;=geo)metric matches “metric” if it is preceded by “geo”, but does not match with “isometric” or “parametric”
-</p>
-</div>
-<button class="collapsible">Checking that a certain pattern does not come immediately before (negative lookbehind)</button>
-<div class="content">
-  <p><strong>For a negative lookbehind, put ?&lt;! in first position inside the group: (?&lt;!...)</strong></p>
-  <p>e.g. (?&lt;!grand\s)total will match “total” if it is  not preceded by “grand ”,  as in “total” or “subtotal”</p>
 </div>
 <button class="collapsible">Creating a non-capturing group (matched text is not stored)</button>
 <div class="content">
@@ -270,6 +259,37 @@ Here is the same example, using a named group: ^(?P&lt;sh&gt;##)?(?(sh)typeA|typ
   <p><strong>Put ?# in first position inside the group </strong></p>
   <p>Anything contained in the sequence (?#...) is ignored by the regex parser. e.g. ^(##)?(?# this is a comment)\W+'</p>
 </div>
+<h4 id="lookahead">Lookahead</h4>
+<button class="collapsible">Checking that a certain pattern follows (positive lookahead)</button>
+<div class="content">
+  <p><strong>For a positive lookahead, put ?= in first position inside the group: (?=...)
+</strong></p>
+  <p> e.g. ABC(?=[A-Z0-9]{5}) matches “ABC” if it is immediately followed by 5 uppercase letters or digits such as "ABC1A2B3"</p>
+</div>
+<button class="collapsible">Checking that a certain pattern follows <strong>immediately</strong> (positive lookahead)</button>
+<div class="content">
+  <p><strong>For a positive lookahead, put ?= in first position inside the group: (?=...)</strong></p>
+  <p>e.g. ABC(?=[A-Z0-9]{5}) matches “ABC” if it is immediately followed by 5 uppercase letters or digits such as "ABC1A2B3"</p>
+</div>
+<button class="collapsible">Checking that a certain pattern does not immediately follow (negative lookahead)</button>
+<div class="content">
+  <p><strong>For a negative lookahead, put ?! in first position inside the group: (?!...)</strong></p>
+  <p>e.g. play(?!\s+the) matches “play” if it is not followed by “ the”, as in  “played the piano”</p>
+</div>
+<h4 id="lookahead">Lookbehind</h4>
+<button class="collapsible">Checking that a certain pattern comes immediately before (positive lookbehind)</button>
+<div class="content">
+  <p><strong>For a positive lookbehind, put ?&lt;= in first position inside the group: (?&lt;=...)
+</strong></p>
+  <p>e.g. (?&lt;=geo)metric matches “metric” if it is preceded by “geo”, but does not match with “isometric” or “parametric”
+</p>
+</div>
+<button class="collapsible">Checking that a certain pattern does not come immediately before (negative lookbehind)</button>
+<div class="content">
+  <p><strong>For a negative lookbehind, put ?&lt;! in first position inside the group: (?&lt;!...)</strong></p>
+  <p>e.g. (?&lt;!grand\s)total will match “total” if it is  not preceded by “grand ”,  as in “total” or “subtotal”</p>
+</div>
+
 
 <h2 id='search'>Looking for matches and extracting matches
 </h2>
