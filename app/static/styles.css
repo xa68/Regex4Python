@@ -38,13 +38,49 @@ nav a {
 .test-regex{
   border: 1px solid #ccc;
   padding: 10px;
+  box-sizing: border-box;
   margin-bottom: 15px;
+}
+
+.test-regex input {
+  width: 400px;
+  margin-right: 5px;
+  overflow: auto;
 }
 
 .test-string {
   border: 1px solid #ccc;
   padding: 10px;
+  box-sizing: border-box;
   margin-bottom: 15px;
+}
+
+.test-string label {
+  vertical-align: top;
+}
+
+.test-string textarea {
+  width: 400px;
+  height: 100px;
+  overflow: auto;
+}
+
+.found-matches {
+  border: 1px solid #ccc;
+  padding: 10px;
+  box-sizing: border-box;
+  margin-bottom: 15px;
+}
+
+.found-matches label {
+  vertical-align: top;
+}
+
+.found-matches textarea {
+  width: 400px;
+  height: 100px;
+  margin-right: 5px;
+  overflow: auto;
 }
 
 .code, .string{

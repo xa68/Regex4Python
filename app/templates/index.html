@@ -41,13 +41,20 @@
   </nav>
 
 <h1>Test your regex</h1>
-<div class="test-regex">
-  <label for="test-regex">Enter the regular expression to test: </label>
-  <input type="text" id="test-regex" name="test-regex">
-</div>
-<div class="test-string">
-  <label for="test-string">Enter the text to search for matches: </label>
-  <input type="text" id="test-string" name="test-string">
+<form action="/index" method="post">
+  <div class="test-regex">
+    <label for="test-regex">Enter the regular expression to test: </label>
+    <input type="text" id="test-regex" name="test-regex" placeholder="for ex.: ^[MTWFS][a-z]+day[s]?">
+  </div>
+  <div class="test-string">
+    <label for="test-string">Enter the text to search for matches: </label>
+    <textarea id="test-string" name="test-string" rows="4" cols="50"></textarea>
+  </div>
+  <button type="submit">Submit</button>
+</form>
+<div class="found-matches">
+  <label for="found-matches">List of found matches: </label>
+  <textarea id="found-matches" name="found-matches" rows="4" cols="30">{{ found_matches }}</textarea>
 </div>
 
 <h1>Quick reference for regular expressions in Python</h1>
