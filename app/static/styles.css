@@ -39,11 +39,11 @@ nav a {
   border: 1px solid #ccc;
   padding: 10px;
   box-sizing: border-box;
-  margin-bottom: 15px;
+  margin: 5px;
 }
 
 .test-regex input {
-  width: 400px;
+  width: 460px;
   margin-right: 5px;
   overflow: auto;
 }
@@ -52,35 +52,37 @@ nav a {
   border: 1px solid #ccc;
   padding: 10px;
   box-sizing: border-box;
-  margin-bottom: 15px;
-}
-
-.test-string label {
-  vertical-align: top;
+  margin: 5px;
 }
 
 .test-string textarea {
-  width: 400px;
-  height: 100px;
-  overflow: auto;
+  width: 460px;
+  height: 200px;
 }
 
-.found-matches {
+.match-result {
   border: 1px solid #ccc;
   padding: 10px;
   box-sizing: border-box;
-  margin-bottom: 15px;
+  margin: 5px;
 }
 
-.found-matches label {
-  vertical-align: top;
+.match-result span {
+  background-color: yellow;
 }
 
-.found-matches textarea {
-  width: 400px;
-  height: 100px;
-  margin-right: 5px;
-  overflow: auto;
+.match-list {
+  border: 1px solid #ccc;
+  padding: 10px;
+  box-sizing: border-box;
+  margin: 5px;
+}
+
+.captures {
+  border: 1px solid #ccc;
+  padding: 10px;
+  box-sizing: border-box;
+  margin: 5px;
 }
 
 .code, .string{
