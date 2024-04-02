@@ -43,7 +43,7 @@ nav a {
 }
 
 .test-regex input {
-  width: 460px;
+  width: 360px;
   margin-right: 5px;
   overflow: auto;
 }
@@ -56,7 +56,7 @@ nav a {
 }
 
 .test-string textarea {
-  width: 460px;
+  width: 360px;
   height: 200px;
 }
 
@@ -76,6 +76,10 @@ nav a {
   padding: 10px;
   box-sizing: border-box;
   margin: 5px;
+}
+
+.unit-match {
+  background-color: #dad6d6;
 }
 
 .captures {

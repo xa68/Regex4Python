@@ -1,52 +1,66 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Quick reference for regular expressions in Python</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" 
-  integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-<link rel="stylesheet" href="{{ url_for('static', filename = 'styles.css') }}"/>  
-</head>
-<body>
-<nav class="navbar navbar-expand-md navbar-dark bg-dark">
+{% extends "base.html" %}
+
+{% block content %}
+
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
   <div class="container">
-    <a class="navbar-brand" href="#">Regex4Python</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav" 
-      aria-controls="nav" aria-label="Toggle navigation">
+    <a class="navbar-brand" href="#">
+      <img src="{{ url_for('static',  filename='python.svg') }}" alt="Logo" width="30" height="30" class="d-inline-block align-text-top">
+      Regex4Python</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
         <span class="navbar-toggler-icon"></span>
       </button>
     <div class="collapse navbar-collapse" id="nav">
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link" href="#matching">Patterns</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#groups">Groups</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#search">Searching</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#flags">Flags</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#sub">Replacing</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#objects">Match objects</a>
-          </li>
-        </ul>
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('reference') }}"><b>Quick reference</b></a>
+        </li>
+        <!-- <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Patterns</a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#matching_text">Text patterns</a></li>
+            <li><a class="dropdown-item" href="#matching_special_characters">Special characters</a></li>
+            <li><a class="dropdown-item" href="#quantifiers">Quantifiers</a></li>
+            <li><a class="dropdown-item" href="#anchors">Start/end anchors</a></li>
+          </ul>
+        </li> -->
+        <!-- <li class="nav-item dropdown"> 
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Groups</a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#subexpressions">Subexpressions (groups)</a></li>
+            <li><a class="dropdown-item" href="#lookahead">Lookahead</a></li>
+            <li><a class="dropdown-item" href="#lookbehind">Lookbehind</a></li>
+          </ul>
+        </li>  -->
+        <!-- <li class="nav-item">
+          <a class="nav-link" href="#search">Searching</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#flags">Flags</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#sub">Replacing</a>
+        </li> -->
+        <!-- <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Match objects</a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#referring">Referring to matches and groups</a></li>
+            <li><a class="dropdown-item" href="#match-info">Getting matches and match info</a></li>
+            <li><a class="dropdown-item" href="#attributes">Match object attributes</a></li>
+          </ul>
+        </li>  -->
+      </ul>
     </div>
   </div>
   </nav>
 
-<h1>Test your regex</h1>
+<h1 id="checking">Check your regex</h1>
 <form action="" method="post">
   {{ form.hidden_tag() }}
   <div class="test-regex">
     <p>
-      Enter the regular expression to test:<br>
-      {{ form.regex(size=32) }}
+      Enter the regular expression to check:<br>
+      {{ form.regex(size=48) }}
     </p>
   </div>
   <div class="test-string">
@@ -57,7 +71,7 @@
 </div>
 </form>
 <div class="match-result">
-  <p>Match result:</p>
+  <p>Match highlights:</p>
   {{ match_result | safe }} <!-- using '|safe' argument to render as html code-->
 </div>
 <div class="match-list">
@@ -65,27 +79,31 @@
   Number of matches: {{ num_matches }}
 <ol>
   {% for match in match_list %}
-  <li>span= {{ match[0] }}, match= '{{ match[-1] }}'</li>
+  <li>span= {{ match[0] }}, match= <span class="unit-match">"{{ match[-1] }}"</span></li>
   {% endfor %}
 </ol>
 </div>
 <div class="captures">
   <p>Match captures:</p>
-  {% for capture in captures %}
-  Match {{ capture[1] }}
-    <ol>
-      {% for groups in capture[0] %}
-      <li>
-        {% for group in groups %}
-          {{ group }}
+  {% if captures %}
+    {% for capture in captures %}
+    Match {{ capture[1] }}
+      <ol>
+        {% for groups in capture[0] %}
+        <li>
+          {% for group in groups %}
+            {{ group }}
+          {% endfor %}
+        </li>
         {% endfor %}
-      </li>
-      {% endfor %}
-    </ol>
-  {% endfor %}
+      </ol>
+    {% endfor %}
+  {% else %}
+  No captures.
+  {% endif %} 
 </div>
 
-<h1>Quick reference for regular expressions in Python</h1>
+<!-- <h1>Quick reference for regular expressions in Python</h1>
 <hr style="border: 1px solid #524949; width: 98%; margin: 10px auto;">
 
 <h2 id='matching'>Matching patterns</h2>
@@ -226,14 +244,14 @@ In a searching function using the <span class ='code'>re.MULTILINE</span> flag, 
   <p>e.g. <span class ='string'>time$, time\Z, \?$</span>. 
 In a searching function using the <span class ='code'>re.MULTILINE</span> flag, <span class ='code'>$</span> matches both at the end of the string and at the end of any line within the string, but only at the end of the whole string without the flag. <span class ='code'>re.MULTILINE</span> has no effect on <span class ='code'>\Z</span>. <span class ='code'>re.M</span> is shorthand for <span class ='code'>re.MULTILINE</span>. </p>
 </div>
-    <button class="collapsible"> Text required to be at the beginning of words to be a match (such as prefixes) </button>
+    <button class="collapsible"> Text required to be at the beginning of words to be a match</button>
 <div class="content">
   <p><strong>Put <span class ='code'>\b</span> in front of the expression</strong></p>
   <p>e.g. <span class ='string'>\breg\w+</span> matches words starting with “reg” such as “regular”.
 <span class ='code'>\B</span> in front of the expression is the opposite: matching patterns within or at the end of words, such as hyphens or slashes.
 </p>
 </div>
-<button class="collapsible">Text required to be at the end of words to be match (such as suffixes)</button>
+<button class="collapsible">Text required to be at the end of words to be match</button>
 <div class="content">
   <p><strong>Put <span class ='code'>\b</span> behind the expression</strong></p>
   <p>e.g. <span class ='string'>\w+ly\b</span> matches words ending with “ly” such as “truly”.
@@ -311,7 +329,7 @@ Here is the same example, using a named group: ^(?P&lt;sh&gt;##)?(?(sh)typeA|typ
   <p><strong>For a negative lookahead, put ?! in first position inside the group: (?!...)</strong></p>
   <p>e.g. play(?!\s+the) matches “play” if it is not followed by “ the”, as in  “played the piano”</p>
 </div>
-<h4 id="lookahead">Lookbehind</h4>
+<h4 id="lookbehind">Lookbehind</h4>
 <button class="collapsible">Checking that a certain pattern comes immediately before (positive lookbehind)</button>
 <div class="content">
   <p><strong>For a positive lookbehind, put ?&lt;= in first position inside the group: (?&lt;=...)
@@ -467,15 +485,15 @@ split() is available for compiled expression objects as well eg. re.compile('\s*
 </p>
 </div>
 
-<h2 id='objects'>Using the match objects returned by search functions
-</h2>
-<button class="collapsible">Referring to match objects</button>
+<h2 id="objects">Using the match objects returned by search functions</h2>
+<h4 id="referring">Referring to matches and groups</h4>
+<button class="collapsible">Referring to matches</button>
 <div class="content">
   <p><strong>Use m.group(), with m being the match object
 </strong></p>
   <p>Calling m.group() with an argument of 0 or no argument returns the entire match e.g. m = re.search(r'(\w+),(\w+),(\w+)', 'red,green,blue'); m.group(0) gives 'red,green,blue'; m.group() gives 'red,green,blue'</p>
 </div>
-<button class="collapsible">Referring to match objects by their number or name</button>
+<button class="collapsible">Referring to groups within matches by their number or name</button>
 <div class="content">
   <p><strong>Pass the group order number or name as an argument to .group()</strong></p>
   <p>e.g. m.group(n) returns the nth group e.g.  m =  re.search(r'(\w+),(\w+),(\w+)', 'red,green,blue'); m.group(1) gives 'red' m.group(3) → 'blue'; m.group(3, 1, 2) gives ('blue', 'red', 'green'); m[2] gives 'green' (syntactic sugar for m.group(2)).
@@ -488,6 +506,14 @@ When a group is involved in the overall match several times, calling m.group() f
 </strong></p>
   <p>re_obj.groupindex contains a dictionary mapping each group name (?P&lt;name&gt;...), if any, to the corresponding group number e.g. re_obj = re.compile(r'(?P&lt;c1&gt;...),(?P&lt;c2&gt;...)'); re_obj.groupindex gives mappingproxy({'w1': 1, 'w2': 2}); re_obj.groupindex['c1'] is 1; re_obj.groupindex['c2'] is 2</p>
 </div>
+<button class="collapsible">Referring to captured groups for insertion in a “template” string</button>
+<div class="content">
+  <p><strong>Use m.expand() with m being the match object, passing a reference to capturing groups, following the pattern \n or \g&lt;n&gt; for numbered groups, or g&lt;name&gt; for named groups
+</strong></p>
+  <p>m.expand() returns the string resulting from performing backreference substitution on the referred group(s) e.g. m = re.search(r'(\w+),(\w+),(\w+)', 'red,green,blue'); m gives match='red,green,blue'; m.groups() gives ('red', 'green', 'blue'); m.expand(r'\2') gives 'green'; m.expand(r'[\3] -> [\1]') gives '[blue] -> [red]'. g&lt;1&gt;, g&lt;2&gt; etc, can replace \1, \2 in the example above. Example with named groups: m = re.search(r'(?P&lt;qty&gt;\d+)', 'red123yellow'); m.group(1) gives '123'; m.expand(r'total \g&lt;qty&gt; units') gives 'total 123 units'. 
+expand() and re.sub() behave similarly</p>
+</div>
+<h4 id="match-info">Getting matches and match info</h4>
 <button class="collapsible">Getting the matches as a tuple of strings</button>
 <div class="content">
   <p><strong>Use m.groups() with m being the match object</strong></p>
@@ -498,13 +524,6 @@ The optional default argument specifies what replaces None for  groups that  do 
 <div class="content">
   <p><strong>Use m.groupdict() with m being the match object</strong></p>
   <p>m.groupdict() returns a dictionary of named groups captured with the (?P&lt;name&gt;...) pattern e.g. m =  re.search(r'red,(?P&lt;c1&gt;\w+),(?P&lt;c2&gt;\w+)?,yellow', 'red,green,,yellow'); m.groupdict() gives {'c1': 'green', 'c2': None}; m.groupdict(default='???') gives {'c1': 'green', 'c2': '???'}</p>
-</div>
-<button class="collapsible">Referring  to captured matches to insert text in a “template” string</button>
-<div class="content">
-  <p><strong>Use m.expand() with m being the match object, passing a reference to capturing groups, following the pattern \n or \g&lt;n&gt; for numbered groups, or g&lt;name&gt; for named groups
-</strong></p>
-  <p>m.expand() returns the string resulting from performing backreference substitution on the referred group(s) e.g. m = re.search(r'(\w+),(\w+),(\w+)', 'red,green,blue'); m gives match='red,green,blue'; m.groups() gives ('red', 'green', 'blue'); m.expand(r'\2') gives 'green'; m.expand(r'[\3] -> [\1]') gives '[blue] -> [red]'. g&lt;1&gt;, g&lt;2&gt; etc, can replace \1, \2 in the example above. Example with named groups: m = re.search(r'(?P&lt;qty&gt;\d+)', 'red123yellow'); m.group(1) gives '123'; m.expand(r'total \g&lt;qty&gt; units') gives 'total 123 units'. 
-expand() and re.sub() behave similarly</p>
 </div>
 <button class="collapsible">Getting the start index location or the end index location of a match</button>
 <div class="content">
@@ -532,6 +551,7 @@ This tells you how many groups actually participated in the match, e.g. m = re.s
 m.lastgroup gives 'n2';
 m.lastgroup returns None if the last captured match isn’t from a named group.</p>
 </div>
+<h4 id="attributes">Match object attributes</h4>
 <button class="collapsible">Getting an object of the expression that produced the match</button>
 <div class="content">
   <p><strong>Use the m.re attribute, with m being the match object</strong></p>
@@ -547,10 +567,6 @@ m.lastgroup returns None if the last captured match isn’t from a named group.<
 <div class="content">
   <p><strong>Use the m.string attribute, with m being the match object</strong></p>
   <p>m.string contains the input string passed to the search or substitution function as an argument e.g. m = re.search(r'(\w+),(\w+),(\w+)', 'red,green,blue'); m.string gives 'red,green,blue'</p>
-</div>
-  
-<script src="{{ url_for('static', filename = 'script.js')}}"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</div> -->
 
-</body>
-</html>
+{% endblock %}

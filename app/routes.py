@@ -31,8 +31,8 @@ def index():
 
 def highlight_matches(matches, string):
     matches = [m.group() for m in matches] # get list of matches out of iterator
-    matches = set(matches) # removing duplicates
-    for match in matches:
+    matches = list(set(matches)) # removing duplicates
+    for match in matches[:10]:  # max 10 matches for highlighting
         regex = f"{match}"
         highlighted_matches = re.sub(regex, lambda x: "<span>"+x.group()+"</span>", string)
         string = highlighted_matches
@@ -50,5 +50,12 @@ def list_of_matches(regex, string):
 def match_captures(regex, string):
     matches = re.finditer(regex, string)
     captures = [(m.groups(), num + 1) for num, m in enumerate(matches)]
+
+    if sum([len(capture[0]) for capture in captures]) == 0: 
+        return None
+    else: 
+        return captures
     
-    return captures
+@app.route('/reference')
+def reference():
+    return render_template('reference.html')
