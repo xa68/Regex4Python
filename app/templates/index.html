@@ -11,44 +11,10 @@
         <span class="navbar-toggler-icon"></span>
       </button>
     <div class="collapse navbar-collapse" id="nav">
-      <ul class="navbar-nav">
+      <ul class="navbar-nav"> 
         <li class="nav-item">
           <a class="nav-link" href="{{ url_for('reference') }}"><b>Quick reference</b></a>
         </li>
-        <!-- <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Patterns</a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#matching_text">Text patterns</a></li>
-            <li><a class="dropdown-item" href="#matching_special_characters">Special characters</a></li>
-            <li><a class="dropdown-item" href="#quantifiers">Quantifiers</a></li>
-            <li><a class="dropdown-item" href="#anchors">Start/end anchors</a></li>
-          </ul>
-        </li> -->
-        <!-- <li class="nav-item dropdown"> 
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Groups</a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#subexpressions">Subexpressions (groups)</a></li>
-            <li><a class="dropdown-item" href="#lookahead">Lookahead</a></li>
-            <li><a class="dropdown-item" href="#lookbehind">Lookbehind</a></li>
-          </ul>
-        </li>  -->
-        <!-- <li class="nav-item">
-          <a class="nav-link" href="#search">Searching</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#flags">Flags</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#sub">Replacing</a>
-        </li> -->
-        <!-- <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Match objects</a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#referring">Referring to matches and groups</a></li>
-            <li><a class="dropdown-item" href="#match-info">Getting matches and match info</a></li>
-            <li><a class="dropdown-item" href="#attributes">Match object attributes</a></li>
-          </ul>
-        </li>  -->
       </ul>
     </div>
   </div>
@@ -57,14 +23,25 @@
 <h1 id="checking">Check your regex</h1>
 <form action="" method="post">
   {{ form.hidden_tag() }}
-  <div class="test-regex">
-    <p>
-      Enter the regular expression to check:<br>
-      {{ form.regex(size=48) }}
-    </p>
+  <div class="arguments">
+    <div class="test-regex">
+      <p>
+        Enter the regular expression to check:<br>
+        {{ form.regex(size=50) }}
+      </p>
+    </div>
+    <div class="flags">
+      {{ form.flag_ignorecase }}
+      <label for="flag_ignorecase">IGNORECASE</label><br>
+      {{ form.flag_multiline }}
+      <label for="flag_multiline">MULTILINE</label><br>
+      {{ form.flag_dotall }}
+      <label for="flag_dotall">DOTALL</label><br>
+    </div>
   </div>
+  <div class="texts">
   <div class="test-string">
-    <p>Enter the text to search for matches: <br>
+    <p>Enter the text to search for matches:<br>
     {{ form.test_string}} 
   </p>
   <p>{{ form.submit() }}</p>
@@ -74,499 +51,37 @@
   <p>Match highlights:</p>
   {{ match_result | safe }} <!-- using '|safe' argument to render as html code-->
 </div>
-<div class="match-list">
-<p>List of matches:</p>
-  Number of matches: {{ num_matches }}
-<ol>
-  {% for match in match_list %}
-  <li>span= {{ match[0] }}, match= <span class="unit-match">"{{ match[-1] }}"</span></li>
-  {% endfor %}
-</ol>
 </div>
-<div class="captures">
-  <p>Match captures:</p>
-  {% if captures %}
-    {% for capture in captures %}
-    Match {{ capture[1] }}
-      <ol>
-        {% for groups in capture[0] %}
-        <li>
-          {% for group in groups %}
-            {{ group }}
-          {% endfor %}
-        </li>
-        {% endfor %}
-      </ol>
+<div class="infos">
+  <div class="match-list">
+  <p>Match info:</p>
+    <b>Flag(s) in effect:</b> {% if flags %} {{ flags }} {% else %} <i>None.</i> {% endif %} <br>
+    <b>Number of matches:</b> {{ num_matches }}
+  <ol>
+    {% for match in match_list %}
+    <li>span= {{ match[0] }}, match= <span class="unit-match">"{{ match[-1] }}"</span></li>
     {% endfor %}
-  {% else %}
-  No captures.
-  {% endif %} 
+  </ol>
+  </div>
+  <div class="captures">
+      <p>Match captures:</p>
+      {% if captures %}
+        {% for capture in captures %}
+        Match {{ capture[1] }}
+          <ol>
+            {% for groups in capture[0] %}
+            <li>
+              {% for group in groups %}
+                {{ group }}
+              {% endfor %}
+            </li>
+            {% endfor %}
+          </ol>
+        {% endfor %}
+      {% else %}
+      <i>No captures.</i>
+      {% endif %} 
+  </div>
 </div>
-
-<!-- <h1>Quick reference for regular expressions in Python</h1>
-<hr style="border: 1px solid #524949; width: 98%; margin: 10px auto;">
-
-<h2 id='matching'>Matching patterns</h2>
-<h4 id="matching_text">Text patterns</h4>
-<button class="collapsible">Matching text literally</button>
-<div class="content">
-  <p><strong>Use a string literal</strong></p>
-  <p>Case sensitive, e.g. <span class ='string'>reg</span> matches “reg” in “regex”, but not in “Regex”
-The <span class ='code'>re.I (re.IGNORECASE)</span> flag makes matching case-insensitive in a searching function.
-</p>
-</div>
-<button class="collapsible">Matching any single alphanumeric character</button>
-<div class="content">
-  <p><strong>Use <span class ='code'>\w</span></strong></p>
-  <p><span class ='code'>\w</span> is shorthand for <span class ='string'>[a-zA-Z0-9_]</span>. 
-<span class ='code'>\W</span> is the opposite of <span class ='code'>\w</span>, shorthand for <span class ='string'>[^a-zA-Z0-9_]</span>.
-</p>
-</div>
-<button class="collapsible">Matching any single digit</button>
-<div class="content">
-  <p><strong>Use <span class ='code'>\d</span></strong></p>
-  <p><span class ='code'>\d</span> is shorthand for <span class ='string'>[0-9]</span>. <span class ='code'>\D</span> is the opposite of <span class ='code'>\d</span>, shorthand for <span class ='string'>[^0-9]</span>.</p>
-</div>
-<button class="collapsible">Matching a whitespace</button>
-<div class="content">
-  <p><strong>Use <span class ='code'>\s</span></strong></p>
-  <p><span class ='code'>\s</span> is shorthand for <span class ='string'>[ \r\n\t\f\v]</span>. <span class ='code'>\S</span> is the opposite, matching what is not whitespace: <span class ='string'>[^ \r\n\t\f\v]</span>.</p>
-</div>
-<button class="collapsible">Matching any character</button>
-<div class="content">
-  <p><strong><span class ='code'>.</span> (dot) matches any single character (including a space), except the newline <span class ='code'>\n</span> character</strong></p>
-  <p>Using the <span class ='code'>re.S (re.DOTALL)</span> flag with a searching function forces the dot to match a new line character.
-</p>
-</div>
-<button class="collapsible">Matching a character among a set of options</button>
-<div class="content">
-  <p><strong>Put the set of matching options in square brackets: <span class ='code'>[...]</span>. Any of the characters enclosed within the square brackets <span class ='code'>[ ]</span> is a matching option for a single character from the input text.
-</strong></p>
-  <p>e.g. <span class ='string'>defen[cs]e</span> matches both “defence” and “defense”. <span class ='string'>[^...]</span> is the opposite, matching anything but what is in the set, e.g. <span class ='string'>&lt;[^>]&gt;</span> matches an html tag with any content. 
-An hyphen <span class ='string'>-</span> can indicate a range of characters in a set e.g. <span class ='string'>[a-fA-F] [0-5]</span>.
-</p>   
-</div>
-<button class="collapsible">Specify a set of alternatives on which to match</button>
-<div class="content">
-  <p><strong>Insert the pipe character <span class ='code'>|</span> between the alternative expressions</strong></p>
-  <p>e.g. <span class ='string'>[0-9]+|[a-f]+</span> means one or more digits, or one or more smallcaps from a to f.
-Alternation is non-greedy: stops when the first match is found, looking at the expressions from left to right e.g. <span class ='string'>re.search('a|b|c', 'abc')</span> matches “a”. </p>
-</div>
-<h4 id="matching_special_characters">Special characters</h4>
-<button class="collapsible">Matching an hyphen literally when in a set
-</button>
-<div class="content">
-  <p><strong>Place the hyphen in first or last position in the set, or escape it
-</strong></p>
-  <p>e.g. <span class ='string'>[-abc] [abc-] [ab\-c]</span></p>
-</div>
-<button class="collapsible">Matching a special character literally when in a set</button>
-<div class="content">
-  <p><strong>Special characters lose their special meaning inside sets, except for backslash <span class ='code'>\</span>, and for the caret character <span class ='code'>^</span> when in first position inside the set</strong></p>  
-  <p>e.g. the special characters in the set <span class ='string'>[().,*+?|]</span> match themselves literally</p>
-</div>
-<button class="collapsible">Matching a special character literally when outside a set</button>
-<div class="content">
-  <p><strong>Precede the special character with a backslash <span class ='code'> \ </span>to remove its special meaning</strong></p>
-  <p>e.g <span class ='string'>\.</span> matches a literal dot, such as in "hello.world", <span class ='string'>\?</span> matches a literal question mark, such as in "maybe?", <span class ='string'>\*</span> matches a literal asterisk, such as in "a * b". </p>
-</div>
-<button class="collapsible">Matching a literal backslash</button>
-<div class="content">
-  <p><strong>Use double backslashes <span class ='code'>\\</span> to escape the backslash, using a raw string (prefixed with “r”).</strong></p>
-  <p>e.g. <span class ='string'>r’\\’</span> or <span class ='string'>r’[\\]’</span> matches “\” in “foo\bar”.
-It’s good practice to use a raw string to specify a regular expression in Python whenever it contains backslashes.
-</p>
-</div>
-<button class="collapsible">Automatically adding backslashes in an expression to escape special characters</button>
-<div class="content">
-  <p><strong>Use the <span class ='code'>re.escape()</span> method</strong></p>
-  <p><span class ='code'>re.escape()</span> saves you the trouble of putting in all the backslashes manually when you have many special characters that must be matched literally. It returns a copy of the expression with each nonword character (anything other than a letter, digit, or underscore) preceded by a backslash e.g. <span class ='string'>re.escape('red^green(blue)|yellow')</span> returns the expression string <span class ='code'>'red\^green\(blue\)\|yellow'</span>, and <span class ='string'>re.search(re.escape('red^green(blue)|yellow'), 'red^green(blue)|yellow')</span> matches "red^green(blue)|yellow" literally. </p>
-</div>
-<h4 id="quantifiers">Quantifiers</h4>
-<button class="collapsible">Making a character or set optional (any number of occurrences possible)</button>
-<div class="content">
-  <p><strong>Append an asterisk <span class ='code'>*</span> to the expression</strong></p>
-  <p>e.g. <span class ='string'>a*</span> matches zero or more "a" characters ("", "a", "aa", "aaa", …). 
-<span class ='string'>x*, \d*, \w*, </span> … etc. can match a zero-length string or sequence(“”).</p>
-</div>
-<button class="collapsible">Making a character or set optional (zero or one occurrence possible)</button>
-<div class="content">
-  <p><strong>Append a question mark <span class ='code'>?</span> to the expression</strong></p>
-  <p>e.g. <span class ='string'>colou?r</span> matches both “color” and “colour”,
-<span class ='string'>defen[dcs]?[e]?</span> matches “defend”, “defence” and “defense”.</p>
-</div>
-<button class="collapsible">Making a character or set a requirement for a match (one or more occurrences possible) </button>
-<div class="content">
-  <p><strong>Append a plus sign <span class ='code'>+</span> to the expression
-</strong></p>
-  <p>e.g. <span class ='string'>\d+</span> matches one or more digits (9, 42, 321, …).</p>
-</div>
-<button class="collapsible">Getting the shortest possible match when using the *, +, ? quantifiers (non-greedy, or lazy behaviour)</button>
-<div class="content">
-  <p><strong>Put a question mark after the quantifier symbol: 
-<span class ='code'>*?, +?, ??</span>
-</strong></p>
-  <p><span class ='code'>*, +, ?</span> are “greedy”, trying to match the longest possible string, e.g. <span class ='string'>&lt;.*&gt;</span> matches the whole string “&lt;p&gt;Hello World&lt;/p&gt;”, whereas <span class ='string'>&lt;.*?&gt;</span> matches “&lt;p&gt;”. <span class ='string'>/d+</span> matches “123” but <span class ='string'>/d+?</span> matches “1”.</p>
-</div>
-    <button class="collapsible">Specifying an exact number of repetitions of a character or set to be a match</button>
-<div class="content">
-  <p><strong>Put <span class ='code'>{m}</span> after the expression</strong></p>
-  <p>e.g. <span class ='string'>Xv{4}X</span> matches “XvvvvX”.
-</p>
-</div>
-<button class="collapsible">Specifying a min and max range of repetitions of a character or set to be a match</button>
-<div class="content">
-  <p><strong>Put <span class ='code'>{m, n}</span> after the expression</strong></p>
-  <p>e.g. <span class ='string'>\d{1, 3}</span> matches numbers made of one up to three digits. 
-<span class ='code'>{,n}</span> is identical to <span class ='code'>{0,n}</span>.</p>
-</div>
-<button class="collapsible">Specifying a minimum number of repetitions of a character or set to be a match (no upper limit)</button>
-<div class="content">
-  <p><strong>Put <span class ='code'>{m,}</span> after the expression</strong></p>
-  <p><span class ='code'>{m,}</span> means at least <span class ='code'>m</span> times, 
-<span class ='code'>{,}</span> is identical to <span class ='code'>{0,}</span> or <span class ='code'>*</span>.</p>
-</div>
-<button class="collapsible">Getting the shortest possible match when using the {m, n} quantifiers (non-greedy, or lazy behaviour)</button>
-<div class="content">
-  <p><strong>Put a question mark after the expression: <span class ='code'>{m,n}?</span></strong></p>
-  <p>e.g.  <span class ='string'>X{3,5}?</span>.  <span class ='code'>{m,n}</span> is “greedy”, trying to match the longest possible string.</p>
-</div>
-<h4 id="anchors">Start/end anchors</h4>
-<button class="collapsible">Text required to be at the beginning of a string or of a new line to be a match</button>
-<div class="content">
-  <p><strong>Put the caret <span class ='code'>^</span> anchor or <span class ='code'>\A</span> in first position</strong></p>
-  <p>e.g.  <span class ='string'>^Once, \AOnce, ^!!</span>. With <span class ='code'>re.match()</span>, the caret <span class ='code'>^</span> anchor is redundant. 
-In a searching function using the <span class ='code'>re.MULTILINE</span> flag, <span class ='code'>^</span> matches both at the beginning of the string and at the beginning of any line within the string, but only at the beginning of the whole string without the flag. <span class ='code'>re.MULTILINE</span> has no effect on <span class ='code'>\A</span>.  <span class ='code'>re.M</span> is shorthand for <span class ='code'>re.MULTILINE</span>.</p>
-</div>
-<button class="collapsible">Text required to be at the end of a string or of a new line to be a match</button>
-<div class="content">
-  <p><strong>Put a dollar <span class ='code'>$</span> anchor or <span class ='code'>\Z</span> in last position</strong></p>
-  <p>e.g. <span class ='string'>time$, time\Z, \?$</span>. 
-In a searching function using the <span class ='code'>re.MULTILINE</span> flag, <span class ='code'>$</span> matches both at the end of the string and at the end of any line within the string, but only at the end of the whole string without the flag. <span class ='code'>re.MULTILINE</span> has no effect on <span class ='code'>\Z</span>. <span class ='code'>re.M</span> is shorthand for <span class ='code'>re.MULTILINE</span>. </p>
-</div>
-    <button class="collapsible"> Text required to be at the beginning of words to be a match</button>
-<div class="content">
-  <p><strong>Put <span class ='code'>\b</span> in front of the expression</strong></p>
-  <p>e.g. <span class ='string'>\breg\w+</span> matches words starting with “reg” such as “regular”.
-<span class ='code'>\B</span> in front of the expression is the opposite: matching patterns within or at the end of words, such as hyphens or slashes.
-</p>
-</div>
-<button class="collapsible">Text required to be at the end of words to be match</button>
-<div class="content">
-  <p><strong>Put <span class ='code'>\b</span> behind the expression</strong></p>
-  <p>e.g. <span class ='string'>\w+ly\b</span> matches words ending with “ly” such as “truly”.
-<span class ='code'>\B</span> behind the expression is the opposite: matching patterns at the start or within words, such as hyphens or slashes.</p>
-</div>
-<button class="collapsible">Text required to be within words to be a match</button>
-<div class="content">
-  <p><strong><span class ='code'>\B</span> is the opposite of <span class ='code'>\b</span></strong></p>
-  <p>e.g <span class ='string'>\Bper\B</span> will match “per” only if it appears within a larger word as in “operate”(not at the beginning or end of a word as in “per” or “super”). Useful for matching patterns within words or sequences, such as hyphens or slashes.
-</p>
-</div>
-
-<h2 id='groups'>Using groups for flexible matching</h2>
-<h4 id="subexpressions">Subexpressions (groups)</h4>
-<button class="collapsible">Creating subexpressions for specific pattern matching</button>
-<div class="content">
-  <p><strong>Put in the subexpression in parentheses: (...)
-</strong></p>
-  <p>The characters in the parentheses make a group to which specific matching rules can apply within a larger expression, e.g,. in abc+ the metacharacter ‘+’ applies only to “c”, while in (abc)+ it applies to the entire string “abc”.
-You can nest groups e.g. (abc(123)?)+ 
-</p>
-</div>
-<button class="collapsible">Using groups in expressions to capture the matched elements</button>
-<div class="content">
-  <p><strong>Parentheses create capture groups, storing the matched text for later reference</strong></p>
-  <p>e.g. ((0\d)([.](\d{2})){4}) matches 10-digit phone numbers in the format 01.23.45.67.89</p>
-</div>
-<button class="collapsible">Creating a non-capturing group (matched text is not stored)</button>
-<div class="content">
-  <p><strong>Put ?: in first position inside the group: (?:...)</strong></p>
-  <p>e.g. (?:[Mm]adam|[Ss]ir) 
-Useful when matching on alternatives or required patterns, without the need to capture the text. 
-Can improve efficiency by reducing processing and memory usage.</p>
-</div>
-<button class="collapsible">Referencing matched text by order of capture</button>
-<div class="content">
-  <p><strong>Put \n after the expression, where n is the nth captured match</strong></p>
-  <p>e.g.  (\w+)-\1 matches a sequence of word characters, followed by a hyphen, immediately followed by the same sequence (first capture).
-Useful for finding repeated words such as “the the”, or extracting repeated sequences such as matching word pairs.</p>
-</div>
-<button class="collapsible">Naming a group for backreference by name</button>
-<div class="content">
-  <p><strong>To name a group: put ?P and the group’s name in angle brackets in first position inside the group: (?P<name>...). 
-To back-reference to the named group, put ?P= and the name of the group in first position in a separate group: (?P=name...)</strong></p>
-  <p>e.g. (?P&lt;w1&gt;\w+),(?P&lt;w2&gt;\w+) gives m.group('w1'), m.group('w2'), m.group('w1', 'w2'), with m being the returned match object. 
-The angle brackets (&lt; and &gt;) are required around name when creating a named group but not when referring to it later e.g. (?P&lt;num&gt;\d+)\.(?P=num) matches a sequence of digits, followed by a literal dot, followed by the same sequence of digits again.
-Useful for finding repeated sequences or checking that two words or numbers are identical.
-</p>
-</div>
-<button class="collapsible">Choosing between two alternatives expressions, depending on a third (if-then-else logic)</button>
-<div class="content">
-  <p><strong>Following the expression acting as the condition, add a group having in first position  ?(n), if using an unnamed conditional group, or ?(name), if named, followed  by the two alternative expressions separated by the pipe character |</strong></p>
-  <p>The group will use the first alternative to find a match if the conditional expression itself found a match, otherwise it will use the second alternative, e.g.  ^(##)?(?(1)RefA|RefB) matches “##RefA” if “##” is found at the beginning of the text, otherwise matches "RefB ". 
-Here is the same example, using a named group: ^(?P&lt;sh&gt;##)?(?(sh)typeA|typeB)</p>
-</div>
-<button class="collapsible">Adding comments inside a regular expression</button>
-<div class="content">
-  <p><strong>Put ?# in first position inside the group </strong></p>
-  <p>Anything contained in the sequence (?#...) is ignored by the regex parser. e.g. ^(##)?(?# this is a comment)\W+'</p>
-</div>
-<h4 id="lookahead">Lookahead</h4>
-<button class="collapsible">Checking that a certain pattern follows (positive lookahead)</button>
-<div class="content">
-  <p><strong>For a positive lookahead, put ?= in first position inside the group: (?=...)
-</strong></p>
-  <p> e.g. ABC(?=[A-Z0-9]{5}) matches “ABC” if it is immediately followed by 5 uppercase letters or digits such as "ABC1A2B3"</p>
-</div>
-<button class="collapsible">Checking that a certain pattern follows <strong>immediately</strong> (positive lookahead)</button>
-<div class="content">
-  <p><strong>For a positive lookahead, put ?= in first position inside the group: (?=...)</strong></p>
-  <p>e.g. ABC(?=[A-Z0-9]{5}) matches “ABC” if it is immediately followed by 5 uppercase letters or digits such as "ABC1A2B3"</p>
-</div>
-<button class="collapsible">Checking that a certain pattern does not immediately follow (negative lookahead)</button>
-<div class="content">
-  <p><strong>For a negative lookahead, put ?! in first position inside the group: (?!...)</strong></p>
-  <p>e.g. play(?!\s+the) matches “play” if it is not followed by “ the”, as in  “played the piano”</p>
-</div>
-<h4 id="lookbehind">Lookbehind</h4>
-<button class="collapsible">Checking that a certain pattern comes immediately before (positive lookbehind)</button>
-<div class="content">
-  <p><strong>For a positive lookbehind, put ?&lt;= in first position inside the group: (?&lt;=...)
-</strong></p>
-  <p>e.g. (?&lt;=geo)metric matches “metric” if it is preceded by “geo”, but does not match with “isometric” or “parametric”
-</p>
-</div>
-<button class="collapsible">Checking that a certain pattern does not come immediately before (negative lookbehind)</button>
-<div class="content">
-  <p><strong>For a negative lookbehind, put ?&lt;! in first position inside the group: (?&lt;!...)</strong></p>
-  <p>e.g. (?&lt;!grand\s)total will match “total” if it is  not preceded by “grand ”,  as in “total” or “subtotal”</p>
-</div>
-
-
-<h2 id='search'>Looking for matches and extracting matches
-</h2>
-<button class="collapsible">Scanning a string for a match</button>
-<div class="content">
-  <p><strong>Use re.search()</strong></p>
-  <p>e.g. re.search(r'fox', 'the brown fox')
-The re.search() function searches for the first occurrence of the pattern within the string, returning a match object if it finds a match, and None otherwise.</p>
-</div>
-<button class="collapsible">Specifying a range in the input string that limits where to look for matches</button>
-<div class="content">
-  <p><strong>Pass the pos and endpos optional arguments to the search() method, called on a compiled expression object</strong></p>
-  <p>e.g.  re_obj = re.compile(r'\d+'); 
-m = re_obj.search('red123green', 2, 7); 
-m gives match='123'; 
-m.pos, m.endpos gives (2, 7). 
-Specifying only  <pos> and omitting <endpos>, the search applies to the substring from <pos> to the end of the string eg re_obj.search(s, 6). 
-Anchors such as caret (^) or \A and  dollar sign ($) or \Z still refer to the start and end of the entire input string, not the substring delimited by pos and endpos.</p>
-</div>
-<button class="collapsible">Getting the start and end index locations of the effective range used in the input string</button>
-<div class="content">
-  <p><strong>Use the m.pos and m.endpos attributes, with m being the match object</strong></p>
-  <p>m.pos and m.endpos are respectively the  start and end index locations of the effective range used in the input string (whole string or a slice given by the pos and endpos parameters) e.g. re_obj = re.compile(r'\d+'); m = re_obj.search('red123green', 2, 7); m gives match='123'; m.pos, m.endpos gives (2, 7)</p>
-</div>
-<button class="collapsible">Looking for a match only at the beginning of the string</button>
-<div class="content">
-  <p><strong>Use re.match()</strong></p>
-  <p>e.g. re.match(r'the, 'the lowercase').
-With re.match(), the caret (^) and /A anchors are redundant.</p>
-</div>
-<button class="collapsible">Looking for a match of the entire string (full match)</button>
-<div class="content">
-  <p><strong>Use re.fullmatch()</strong></p>
-  <p>re.fullmatch() returns a match only if the expression matches  the input string in its entirety, and returns None otherwise, eg re.fullmatch(r'\d{2}-\d{2}-\d{4}’, '12-07-2023')</p>
-</div>
-<button class="collapsible">Getting a list of all (non-overlapping) matches</button>
-<div class="content">
-  <p><strong>Use re.findall()</strong></p>
-  <p>re.findall() returns a list of all non-overlapping matches from the input string.  It scans the string from left to right and returns all non-overlapping matches in the order found e.g. re.findall(r'\d+', '123, 42, and 6789') returns ['123', '42', '6789']. 
-If the expression contains a capturing group, then the return list contains only the match for the group, not the entire match e.g  re.findall(r'(#[a-z]+) [\w\s]* !![a-z]+', '#this and also !!that')  returns  ['#this']. 
-Use findall() on  a compiled expression object if you need to limit the range of the input string where to look for matches  e.g. 
-re_obj = re.compile(r'\d+')
-m = re_obj.findall('r12g34b56', 4, 9)
-m gives ['34', '56']
-m.pos, m.endpos gives (4, 9)</p>
-</div>
-<button class="collapsible">Getting an iterator of all match objects</button>
-<div class="content">
-  <p><strong>Use re.finditer()</strong></p>
-  <p>re.finditer() scans the input string for non-overlapping matches of the given pattern and returns an iterator that yields the match objects from any it finds, scanning the string from left to right and returning in the order it finds them.
-Call finditerl() on  a compiled expression object if there is need to limit the range of the input string where to look for matches e.g.
-re_obj = re.compile(r'\d+')
-m = re_obj.finditer('r12g34b56', 4, 9)</p>
-</div>
-
-<h2 id='flags'>Fine-tuning search with flags
-</h2>
-<button class="collapsible">Making matching case-insensitive</button>
-<div class="content">
-  <p><strong>Add re.I or re.IGNORECASE as an argument</strong></p>
-  <p>e.g.  re.search('[a-z]+', 'aBcDeF', re.I). 
-The IGNORECASE flag is available to re.compile() as well. The .flags attribute of the compiled expression object shows the flags that are in effect.</p>
-</div>
-<button class="collapsible">Applying the caret (^) and dollar ($) anchors on each line in a multiline-string</button>
-<div class="content">
-  <p><strong>Add re.M  or re.MULTILINE as an argument</strong></p>
-  <p>e.g.  re.search(^Name: \w+\nAge: \d+\nId: \d{6}, user, re.M). 
-Using the re.MULTILINE flag, ^ ($) matches both at the beginning (end) of the input string and at the beginning (end)  of any line within the string, but only at the beginning (end) of the whole string without the flag. re.MULTILINE has no effect on the \A or \Z anchors.
-The MULTILINE flag is available to re.compile() as well. The .flags attribute of the compiled expression object shows the flags that are in effect.</p>
-</div>
-<button class="collapsible">Forcing the . dot character to match a newline character.(\n)</button>
-<div class="content">
-  <p><strong>Add re.S or re.DOTALL as an argument</strong></p>
-  <p>The dot metacharacter matches any character except the newline character (\n). The DOTALL flag lifts this restriction e.g. re.search('Description:.*Price', specs, re.S) matches the full text between “Description: and “Price” in the specs string.
-The DOTALL flag is available to re.compile() as well. The .flags attribute of the compiled expression object shows the flags that are in effect.</p>
-</div>
-<button class="collapsible">Combining flag arguments</button>
-<div class="content">
-  <p><strong>Insert the pipe character | between the flags</strong></p>
-  <p>e.g re.search(r'abc|xyz', 'aBc\nXYZ', re.I | re.M). 
-Combined flags are available to re.compile() as well. The .flags attribute of the compiled expression object shows the flags that are in effect.</p>
-</div>
-<button class="collapsible">Specify the flag(s) within the expression</button>
-<div class="content">
-  <p><strong>Put the flag symbol(s) in a separate group in first position in the expression following the pattern (?symbols)</strong></p>
-  <p>e.g. re.search('(?im)^green', 'RED\nGREEN\nBLUE\n') can replace re.search('^green', 'RED\nGREEN\nBLUE\n', re.I|re.M). In this example, (?im) together activates both the case-insensitive (i) and multi-line (m) matching modes for the regular expression pattern that follows it. 
-This use of flags is  available to re.compile() as well. The .flags attribute of the compiled expression object shows the flags that are in effect.</p>
-</div>
-<button class="collapsible">Specifying a flag for a specific group </button>
-<div class="content">
-  <p><strong>Put the flag symbol(s) in first position in the group following the pattern (?symbols:) to activate it, precede the symbol by a minus sign to deactivate the flag
-</strong></p>
-  <p>e.g (?i:Cat-\w+):\s(?m:.*)$ matches “Cat-” ( case-insensitive match) followed by one or more word characters, a colon, a space, and a  multiline match for any text until the end of the string.
-This use of flags is  available to re.compile() as well. The .flags attribute of the compiled expression object shows the flags that are in effect.
-</p>
-</div>
-
-<h2 id='sub'>Replacing and modifying parts of text
-</h2>
-<button class="collapsible">Replacing matching parts of a text with other text</button>
-<div class="content">
-  <p><strong>
-Use re.sub()</strong></p>
-  <p>re.sub() scans a string from left to right for matches, replacing the non-overlapping matching portions with the specified replacement string, and returns the resulting string, e.g. re.sub('\.\d+\.', '//', 'red.123.green.789.blue') returns 'red//green//blue'. 
-If re.sub() doesn’t find any matches, it returns the string unchanged. 
-Using the optional count parameter, re.sub() performs at most the number of  replacements specified.
-If the expression specifies a zero-length match such as 'a*', or 'b*', or 'c*', etc.  then re.sub() will substitute the replacement into every zero-length  position in the string,  e.g.
-re.sub('x*', '*', 'red') returns '*r*e*d*', and re.sub('\Bx*', '*', 'red') returns 'r*e*d' (\Bx* means a zero-length string not at a word boundary).
-sub() is available for compiled expression objects as well eg. re.compile('\.\d+\.').sub('//', 'red.123.green.789.blue'), but won’t  support the pos and endpos parameters.</p>
-</div>
-<button class="collapsible">Getting the number of substitutions together with the modified text</button>
-<div class="content">
-  <p><strong>Use re.subn()</strong></p>
-  <p>
-re.subn() returns information regarding the number of substitutions made in a two-tuple consisting of the modified string and the number of substitutions made, e.g.  re.subn(r'\w+', 'xxx', 'red,green,blue,yellow') gives 
-('xxx,xxx,xxx,xxx', 4)
-</p>
-</div>
-<button class="collapsible">Making replacements with captured matches</button>
-<div class="content">
-  <p><strong>Specify the group(s) number or name inside angle brackets in the expression following the patterns \n, \g&lt;number&gt; or \g&lt;name&gt;</strong></p>
-  <p>e.g. with a group number, re.sub(r'(\d+)', r'\g&lt;1&gt;.00', 'total 123 chf') returns 'total 123.00 chf'  (\1 can replace \g&lt;1&gt; in this example).
-The backreference \g&lt;0&gt; refers to the text of the entire match. This is valid even when there are no grouping parentheses in the expression e.g. re.sub(r'\d+', '#\g&lt;0&gt;#', 'red 123 green') returns 'red #123# green'
-e.g. with a group names, re.sub(r'red,(?P&lt;c1&gt;\w+),(?P&lt;c2&gt;\w+),yellow', 'red,\g&lt;c2&gt;,\g&lt;c1&gt;,yellow', 'red,Green,Blue,yellow')  returns 'red,Blue,Green,yellow'</p>
-</div>
-<button class="collapsible">Using a function to generate the replacement string</button>
-<div class="content">
-  <p><strong>
-Specify the replacement argument as a function in re.sub()
-</strong></p>
-  <p>
-When re.sub() calls that function for each match found it passes each corresponding match as an argument to the function to provide information about the match e.g. re.sub('\d+',lambda x: x.group() * 2, 'red123green') returns 'red123123green'</p>
-</div>
-<button class="collapsible">Splitting a string into substrings using an expression as a delimiter</button>
-<div class="content">
-  <p><strong>Use re.split()</strong></p>
-  <p>re.split() splits a string into substrings using an expression as a delimiter and returns a list of substrings e.g.  re.split('\s*[-;*]\s*', 'red-green  ;  blue * yellow') returns ['red', 'green', 'blue', 'yellow']. 
-When using groups in the expression the delimiter characters will be included in the returned list as well. You can put the delimiters expression in a non-capturing group to exclude them from the returned list e.g. (?:\s*[,;/]\s*). 
-split() is available for compiled expression objects as well eg. re.compile('\s*[-;*]\s*').split( 'red-green  ;  blue * yellow'), but won’t  support the pos and endpos parameters.
-</p>
-</div>
-
-<h2 id="objects">Using the match objects returned by search functions</h2>
-<h4 id="referring">Referring to matches and groups</h4>
-<button class="collapsible">Referring to matches</button>
-<div class="content">
-  <p><strong>Use m.group(), with m being the match object
-</strong></p>
-  <p>Calling m.group() with an argument of 0 or no argument returns the entire match e.g. m = re.search(r'(\w+),(\w+),(\w+)', 'red,green,blue'); m.group(0) gives 'red,green,blue'; m.group() gives 'red,green,blue'</p>
-</div>
-<button class="collapsible">Referring to groups within matches by their number or name</button>
-<div class="content">
-  <p><strong>Pass the group order number or name as an argument to .group()</strong></p>
-  <p>e.g. m.group(n) returns the nth group e.g.  m =  re.search(r'(\w+),(\w+),(\w+)', 'red,green,blue'); m.group(1) gives 'red' m.group(3) → 'blue'; m.group(3, 1, 2) gives ('blue', 'red', 'green'); m[2] gives 'green' (syntactic sugar for m.group(2)).
-Example with named groups: m.group('name') returns the corresponding named group: m = re.search(r'(?P&lt;c1&gt;\w+),(?P&lt;c2&gt;\w+),(?P&lt;c3&gt;\w+)', 'red,green,blue'); m.group('c1') gives 'red'; m.group('c3') gives 'blue'; m.group('c3', 'c1', 'c1', 'c2') gives ('blue', 'red', 'red', 'green'); m['c2'] gives 'green' (syntactic sugar for m.group('c2')). 
-When a group is involved in the overall match several times, calling m.group() for that group number or name returns only the part of the input string that matched <strong>the last</strong>. The earlier matches are not accessible, e.g. m = re.match(r'(\w{3,5},)+', 'red,green,blue,yellow') gives match='red,green,blue,' with m.group(1) being 'blue,' (last match occurrence of that group)</p>
-</div>
-<button class="collapsible">Getting a dictionary mapping group names to group numbers (from a compiled expression object)</button>
-<div class="content">
-  <p><strong>Use the re_obj.groupindex attribute, with re_obj being the compiled regular expression object
-</strong></p>
-  <p>re_obj.groupindex contains a dictionary mapping each group name (?P&lt;name&gt;...), if any, to the corresponding group number e.g. re_obj = re.compile(r'(?P&lt;c1&gt;...),(?P&lt;c2&gt;...)'); re_obj.groupindex gives mappingproxy({'w1': 1, 'w2': 2}); re_obj.groupindex['c1'] is 1; re_obj.groupindex['c2'] is 2</p>
-</div>
-<button class="collapsible">Referring to captured groups for insertion in a “template” string</button>
-<div class="content">
-  <p><strong>Use m.expand() with m being the match object, passing a reference to capturing groups, following the pattern \n or \g&lt;n&gt; for numbered groups, or g&lt;name&gt; for named groups
-</strong></p>
-  <p>m.expand() returns the string resulting from performing backreference substitution on the referred group(s) e.g. m = re.search(r'(\w+),(\w+),(\w+)', 'red,green,blue'); m gives match='red,green,blue'; m.groups() gives ('red', 'green', 'blue'); m.expand(r'\2') gives 'green'; m.expand(r'[\3] -> [\1]') gives '[blue] -> [red]'. g&lt;1&gt;, g&lt;2&gt; etc, can replace \1, \2 in the example above. Example with named groups: m = re.search(r'(?P&lt;qty&gt;\d+)', 'red123yellow'); m.group(1) gives '123'; m.expand(r'total \g&lt;qty&gt; units') gives 'total 123 units'. 
-expand() and re.sub() behave similarly</p>
-</div>
-<h4 id="match-info">Getting matches and match info</h4>
-<button class="collapsible">Getting the matches as a tuple of strings</button>
-<div class="content">
-  <p><strong>Use m.groups() with m being the match object</strong></p>
-  <p>e.g. m = re.search(r'(\w+),(\w+),(\w+)', 'red,green,blue'); m.groups() gives ('red', 'green', 'blue'). 
-The optional default argument specifies what replaces None for  groups that  do not participate in the overall match, e.g. m =  re.search(r'(\w+),(\w+),(\w+)?', 'red,green,'); print(m.group(3)) gives None; m.groups() gives ('red', 'green', None); m.groups(default='???') gives ('foo', 'bar', '???')</p>
-</div>
-<button class="collapsible">Getting a dictionary of matches </button>
-<div class="content">
-  <p><strong>Use m.groupdict() with m being the match object</strong></p>
-  <p>m.groupdict() returns a dictionary of named groups captured with the (?P&lt;name&gt;...) pattern e.g. m =  re.search(r'red,(?P&lt;c1&gt;\w+),(?P&lt;c2&gt;\w+)?,yellow', 'red,green,,yellow'); m.groupdict() gives {'c1': 'green', 'c2': None}; m.groupdict(default='???') gives {'c1': 'green', 'c2': '???'}</p>
-</div>
-<button class="collapsible">Getting the start index location or the end index location of a match</button>
-<div class="content">
-  <p><strong>Use m.start() or m.end(), with m being the match object</strong></p>
-  <p>m.start() and m.end() return  respectively the  starting and ending indices of the substring matched by the group referred to (numbered or named group) e. g.  m = re.search(r'(\d+)\D*(?P&lt;nbr&gt;\d+)', 'red123green456blue'); m.group(1) gives '123'; m.start(1), m.end(1) gives (3, 6)'; m.group('nbr') gives '456'; m.start('nbr'), m.end('nbr') gives (11, 14).
-If the specified group matches a zero-length (empty) string, then .start() and .end() are equal, e.g. m = re.search('red(\d*)green', 'redgreen'); m[1] gives ''; m.start(1), m.end(1) gives (3, 3)
-</p>
-</div>
-<button class="collapsible">Getting the start and end index locations of a match as a tuple</button>
-<div class="content">
-  <p><strong>Use m.span(), with m being the match object</strong></p>
-  <p>m.span() returns a tuple containing  the starting and ending indices of the captured match coming from the group referred to, e.g. m = re.search(r'(\d+)\D*(?P&lt;nbr&gt;\d+)', 'red123green456blue'); m[0] gives 'red123green456blue'; m.span() gives (3, 14); m[1] gives '123'; m.span(1) gives (3, 6); m['nbr'] gives '456'; m.span('nbr') gives (11, 14). 
-m.span() is a shortcut to directly get m.start() and m.end() in a tuple.</p>
-</div>
-<button class="collapsible">Getting the order number of the last group that participated in the match</button>
-<div class="content">
-  <p><strong>Use the m.lastindex attribute, with m being the match object</strong></p>
-  <p>m.lastindex is equal to the integer index of the last group that captured a match, e.g. m = re.search(r'(\w+),(\w+),(\w+)', 'red,green,blue'); m.lastindex gives 3; m[m.lastindex] gives 'blue'. 
-This tells you how many groups actually participated in the match, e.g. m = re.search(r'(\w+),(\w+),(\w+)?', 'red,green,'); m.groups() gives ('red', 'green', None); m.lastindex, m[m.lastindex] gives (2, 'green')</p>
-</div>
-<button class="collapsible">Getting the name of the last group that participated in the match</button>
-<div class="content">
-  <p><strong>Use the m.lastgroup attribute, with m being the match object</strong></p>
-  <p>m.lastgroup contains the name of the last group that captured a matchl  e.g. m = re.search(r'(?P&lt;n1&gt;\d+)\D*(?P&lt;n2&gt;\d+)', 'reg123green456blue'); 
-m.lastgroup gives 'n2';
-m.lastgroup returns None if the last captured match isn’t from a named group.</p>
-</div>
-<h4 id="attributes">Match object attributes</h4>
-<button class="collapsible">Getting an object of the expression that produced the match</button>
-<div class="content">
-  <p><strong>Use the m.re attribute, with m being the match object</strong></p>
-  <p>m.re is the regular expression object that produced the match (it is the same object returned from passing the expression  to re.compile()) e.g. expr = r'(\w+),(\w+),(\w+)'; m = re.search(expr, 'red,green,blue'); m gives match='red,green,blue'; m.re gives re.compile('(\\w+),(\\w+),(\\w+)'). To compare: re_obj = re.compile(expr); re_obj gives re.compile('(\\w+),(\\w+),(\\w+)'); re_obj is m.re gives True
-</p>
-</div>
-<button class="collapsible">Getting the pattern that produced the compiled expression object</button>
-<div class="content">
-  <p><strong>Use the re_obj.pattern attribute, with re_obj being the compiled regular expression object</strong></p>
-  <p>e.g. re_obj = re.compile(r'(?P&lt;c1&gt;>\d+),(?P&lt;c2&gt;\d+)'); re_obj.pattern gives '(?P&lt;c1&gt;\\d+),(?P&lt;c2&gt;\\d+)'</p>
-</div>
-<button class="collapsible">Getting the string that is the target of the search or of the substitution</button>
-<div class="content">
-  <p><strong>Use the m.string attribute, with m being the match object</strong></p>
-  <p>m.string contains the input string passed to the search or substitution function as an argument e.g. m = re.search(r'(\w+),(\w+),(\w+)', 'red,green,blue'); m.string gives 'red,green,blue'</p>
-</div> -->
 
 {% endblock %}

@@ -35,17 +35,35 @@ nav a {
   padding: 5px 5px;
 }
 
+.arguments {
+  display: flex;
+  flex-wrap: wrap;
+}
+
 .test-regex{
   border: 1px solid #ccc;
   padding: 10px;
   box-sizing: border-box;
   margin: 5px;
+  width: 400px;
 }
 
 .test-regex input {
   width: 360px;
-  margin-right: 5px;
-  overflow: auto;
+  /* margin-right: 5px; */
+}
+
+.flags {
+  border: 1px solid #ccc;
+  padding: 10px;
+  box-sizing: border-box;
+  margin: 5px;
+  width: 400px;
+}
+
+.texts {
+  display: flex;
+  flex-wrap:wrap;
 }
 
 .test-string {
@@ -58,6 +76,7 @@ nav a {
 .test-string textarea {
   width: 360px;
   height: 200px;
+  margin-right: 18px;
 }
 
 .match-result {
@@ -65,10 +84,16 @@ nav a {
   padding: 10px;
   box-sizing: border-box;
   margin: 5px;
+  width: 400px;
 }
 
 .match-result span {
   background-color: yellow;
+}
+
+.infos {
+  display: flex;
+  flex-wrap:wrap;
 }
 
 .match-list {
@@ -76,6 +101,7 @@ nav a {
   padding: 10px;
   box-sizing: border-box;
   margin: 5px;
+  width: 400px;
 }
 
 .unit-match {
@@ -87,6 +113,7 @@ nav a {
   padding: 10px;
   box-sizing: border-box;
   margin: 5px;
+  width: 400px;
 }
 
 .code, .string{
