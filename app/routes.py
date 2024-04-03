@@ -50,13 +50,14 @@ def flag_args(flag_ignorecase, flag_multiline, flag_dotall):
     elif not flag_ignorecase and flag_multiline and flag_dotall:
         return [re.M | re.S]
     else:
-        return [re.S]
-    
+        return [re.S] 
+
 
 def highlight_matches(matches, string):
     matches = [m.group() for m in matches] # get list of matches out of iterator
     matches = list(set(matches)) # removing duplicates
-    for match in matches[:10]:  # max 10 matches for highlighting
+    matches = [match if match != "." else "\." for match in matches ] # escaping 'dot' if it is a match
+    for match in matches[:10]: 
         regex = f"{match}"
         highlighted_matches = re.sub(regex, lambda x: "<span>"+x.group()+"</span>", string)
         string = highlighted_matches
